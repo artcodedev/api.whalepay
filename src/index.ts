@@ -1,10 +1,31 @@
 import { Elysia } from "elysia";
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+const app = new Elysia()
+
+
+/*
+*** index path
+*/
+app.get("/", () => "Hello Elysia");
+
+/*
+*** Session path
+*/
+app.post('/session', () => {})
+app.post('/session/verify', () => {})
+
+/*
+*** Start app listen port 
+*/
+app.listen(process.env.BACKEND_PORT || 5000);
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
 );
+
+
+
+
 
 /* 
 *

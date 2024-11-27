@@ -3,10 +3,18 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun build src/index.ts --target bun --outdir ./dist",
+    "start": "NODE_ENV=production bun dist/index.js",
+    "prod": "bun run --hot src/index.ts",
+    "migrate": "bun prisma migrate dev"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@prisma/client": "5.22.0",
+    "dotenv": "^16.4.5",
+    "elysia": "latest",
+    "prisma": "^5.22.0",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "bun-types": "latest"
