@@ -5,8 +5,7 @@ import { Console } from '../Utils/Console';
 import { AnswersError } from "../Models/Answers/AnswersError";
 import { Answers } from "../Utils/Answers";
 import { Currency, Status } from "@prisma/client";
-
-
+import { Logger } from "../Utils/Logger";
 
 interface VarifySessionResponseSession {
     status: string
@@ -28,7 +27,7 @@ interface VarifySessionResponsePayment {
 }
 
 interface VarifySessionResponse {
-    session: VarifySessionResponseSession
+    session: VarifySessionResponseSession   
     payment?: VarifySessionResponsePayment
     domain?: string
 }
@@ -90,6 +89,7 @@ export class SessionController {
                             }
                         }
 
+
                         return Answers.notFound('Session is not created');
 
                     }
@@ -104,6 +104,7 @@ export class SessionController {
 
         }
         catch (e) {
+            Logger.write(process.env.ERROR_LOGS, e)
             return Answers.serverError('server error');
         }
     }
@@ -111,7 +112,7 @@ export class SessionController {
     /*
     *** Varify Session
     */
-    public static async VarifySession({ merchant_uid, session_uid, tag, payment_type }: InitSessionFetchRequestData): Promise<AnswersError | VarifySessionResponse> {
+    public static async VarifySession({ merchant_uid, session_uid }: InitSessionFetchRequestData): Promise<AnswersError | VarifySessionResponse> {
 
         try {
 
@@ -215,6 +216,7 @@ export class SessionController {
                                 return {session: {status: "ERROR"}}
                             }
 
+
                             return Answers.notFound('Payment error get status');
                         }
 
@@ -234,6 +236,7 @@ export class SessionController {
         }
 
         catch (e) {
+            Logger.write(process.env.ERROR_LOGS, e)
             return Answers.serverError('server error');
         }
 
