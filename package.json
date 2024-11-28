@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@prisma/client": "5.22.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.7",
     "dotenv": "^16.4.5",
     "elysia": "latest",
+    "jsonwebtoken": "^9.0.2",
     "prisma": "^5.22.0",
     "uuidv4": "^6.2.13"
   },

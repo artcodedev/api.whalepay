@@ -1,17 +1,33 @@
 import { Elysia } from "elysia";
 
+import {SessionController} from '../src/Controllers/SessionController'
+import { InitSessionData } from '../src/Models/SessionModels';
+
+import {MerchantController} from '../src/Controllers/MerchantController';
+
+import { Auth, AuthResponse, Signup, TrxList, MerchantByUID } from "../src/Models/MerchantController";
 const app = new Elysia()
 
 
 /*
-*** index path
+*** index page
 */
-app.get("/", () => "Hello Elysia");
+app.get("/", () => "No correct parameters :(");
+
+app.get("/test", async ({query}: {query: MerchantByUID}) => query);
 
 /*
-*** Session path
+*** Merchant sinnup | auth  
 */
-app.post('/session', () => {})
+app.get('/merchant/', async ({query}: {query: MerchantByUID}) => await MerchantController.getMerchantByUID(query));
+app.post('/merchant/auth', async ({body} : {body: Auth}) => await MerchantController.auth(body));
+app.post('/merchant/signup', async ({body}: {body: Signup}) => await MerchantController.signup(body));
+
+
+/*
+*** Session create | verify
+*/
+app.post('/session', ({body: InitSessionData}: {body: InitSessionData}) => SessionController.CreateSession(InitSessionData));
 app.post('/session/verify', () => {})
 
 /*

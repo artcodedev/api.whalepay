@@ -124,5 +124,9 @@ model Withdraw {
   updated_at           String?
 }
 
-
-
+model Banks {
+  id     Int     @id @default(autoincrement())
+  title  String
+  status Boolean
+  uid    String
+}

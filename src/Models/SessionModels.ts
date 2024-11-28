@@ -1,6 +1,6 @@
 
 
-import { Currency, Status } from "@prisma/client"
+import { Currency, Status, PaymentType} from "@prisma/client"
 
 export interface InitSessionData {
     merchant_uid: string
@@ -30,4 +30,11 @@ export interface InitSessionDataResponseData {
 export interface InitSessionDataResponse {
     status: number,
     data: InitSessionDataResponseData
+}
+
+export interface InitSessionFetchRequestData {
+    merchant_uid: string
+    session_uid: string
+    tag?: string,
+    payment_type?: PaymentType
 }
