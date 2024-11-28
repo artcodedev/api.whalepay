@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 
+./Logs
+
 # migrations db
 /prisma/migrations
 

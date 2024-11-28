@@ -1,17 +1,21 @@
 
 
-import fs from 'fs'
+// import fs from 'fs'
+// import path from 'path'
+
+import fs from 'fs-extra'
 
 export class Logger {
 
-    public static async write(path: string | undefined, message: any) {
-        if (path && message) {
+    public static async write(file: string | undefined, message: any) {
+
+        if (file && message) {
 
             const mess: string = `[+] ${new Date()} ${message}\n`;
-            fs.writeFile(path, mess, { flag: 'a+' }, err => {
-                console.log(err);
-            });
+            fs.outputFileSync(file, mess, { flag: 'a+' })
+            
         }
     }
 
 }
+

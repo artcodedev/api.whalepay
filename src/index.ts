@@ -6,6 +6,7 @@ import { InitSessionData } from '../src/Models/SessionModels';
 import {MerchantController} from '../src/Controllers/MerchantController';
 
 import { Auth, AuthResponse, Signup, TrxList, MerchantByUID } from "../src/Models/MerchantController";
+import { Logger } from "./Utils/Logger";
 const app = new Elysia()
 
 
@@ -13,6 +14,13 @@ const app = new Elysia()
 *** index page
 */
 app.get("/", () => "No correct parameters :(");
+
+
+app.get('/some', () => {
+  Logger.write(process.env.ERROR_LOGS, 'some');
+
+  return "log"
+})
 
 app.get("/test", async ({query}: {query: MerchantByUID}) => query);
 
