@@ -36,10 +36,16 @@ interface VarifySessionResponse {
 
 export class SessionController {
 
-
+    /*
+    *** Check varify token
+    */
     private static async VarifyToket(token: string): Promise<string | JwtPayload | boolean> {
 
-        return jsonwebtoken.verify(token, SecretKey.secret_key)
+        try {
+            return jsonwebtoken.verify(token, SecretKey.secret_key)
+        } catch (e) {
+            return false
+        }
 
     }
 
@@ -50,12 +56,11 @@ export class SessionController {
 
         try {
 
-            const varifyTokern: InitSessionData = await SessionController.VarifyToket(token) as InitSessionData;
+            const varifyTokern: InitSessionData | boolean = await SessionController.VarifyToket(token) as InitSessionData;
 
             if (varifyTokern?.secret_key) {
-                const merchant = await Prisma.client.merchant.findUnique({ where: { uid: varifyTokern.merchant_uid } })
 
-                Console.log(merchant)
+                const merchant = await Prisma.client.merchant.findUnique({ where: { uid: varifyTokern.merchant_uid } })
 
                 if (merchant) {
 

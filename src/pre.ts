@@ -36,7 +36,7 @@ import {SecretKey} from '../src/Secure/SeckretKey'
 
     const response = await fetch("localhost:5000/session", {
         method: "POST",
-        body: JSON.stringify({token: data + "778"}),
+        body: JSON.stringify({token: data}),
         headers: { "Content-Type": "application/json" },
     });
     const html = await response.json();
