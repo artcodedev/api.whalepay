@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Prisma } from "../Utils/Prisma";
 import jsonwebtoken from "jsonwebtoken";
 import { Answers } from "../Utils/Answers";
+import {SecretKey} from '../Secure/SeckretKey'
 
 
 /*
@@ -20,7 +21,7 @@ export class MerchantController {
     /*
     *** Private secret key (quiet! don't tell anyone)
     */
-    private static readonly secret_key: string = " 8 musdf 56)_@#9- 09 798f7*&R^ ^&  poduf6o9 0";
+    // private static readonly secret_key: string = " 8 musdf 56)_@#9- 09 798f7*&R^ ^&  poduf6o9 0";
 
     /*
     *** Auth merchant
@@ -49,7 +50,9 @@ export class MerchantController {
             return Answers.wrong("not all data has been transferred");
 
         } catch (e) {
+
             return Answers.serverError('server error');
+
         }
     }
 
@@ -85,7 +88,7 @@ export class MerchantController {
                             message: "Merchant successfully created",
                             token: await MerchantController.generateMerchantToken(merchant),
                         };
-                        
+
                     }
 
                 }
@@ -182,7 +185,7 @@ export class MerchantController {
                 secret_key: merchant.secret_key,
             },
 
-            MerchantController.secret_key,
+            SecretKey.secret_key,
 
             { expiresIn: "24h" }
         );

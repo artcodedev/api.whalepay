@@ -6,6 +6,8 @@ import { AnswersError } from "../Models/Answers/AnswersError";
 import { Answers } from "../Utils/Answers";
 import { Currency, Status } from "@prisma/client";
 import { Logger } from "../Utils/Logger";
+import jsonwebtoken, { JwtPayload } from "jsonwebtoken";
+import {SecretKey} from '../Secure/SeckretKey';
 
 interface VarifySessionResponseSession {
     status: string
@@ -34,36 +36,42 @@ interface VarifySessionResponse {
 
 export class SessionController {
 
+
+    private static async VarifyToket(token: string): Promise<string | JwtPayload | boolean> {
+
+        return jsonwebtoken.verify(token, SecretKey.secret_key)
+
+    }
+
     /*
     *** Create new session
     */
-    public static async CreateSession(
-        { merchant_uid, secret_key, amount, currency, domain, callback, description, metadata }: InitSessionData
-    ): Promise<AnswersError | InitSessionDataResponse> {
+    public static async CreateSession({token}:{token: string}): Promise<AnswersError | InitSessionDataResponse> {
 
         try {
 
-            if (merchant_uid && secret_key && amount && currency && domain && callback && description && metadata) {
+            const varifyTokern: InitSessionData = await SessionController.VarifyToket(token) as InitSessionData;
 
-                const merchant = await Prisma.client.merchant.findUnique({ where: { uid: merchant_uid } })
+            if (varifyTokern?.secret_key) {
+                const merchant = await Prisma.client.merchant.findUnique({ where: { uid: varifyTokern.merchant_uid } })
 
                 Console.log(merchant)
 
                 if (merchant) {
 
-                    if (merchant.secret_key == secret_key) {
+                    if (merchant.secret_key == varifyTokern.secret_key) {
 
                         const session = await Prisma.client.session.create({
                             data: {
                                 uid: uuidv4(),
                                 merchant_id: merchant.id,
                                 secret_key: merchant.secret_key,
-                                amount: amount,
-                                currency: Currency[currency],
-                                description: description,
-                                domain: domain,
-                                callback: callback,
-                                metadata: metadata,
+                                amount: varifyTokern.amount,
+                                currency: Currency[varifyTokern.currency],
+                                description: varifyTokern.description,
+                                domain: varifyTokern.domain,
+                                callback: varifyTokern.callback,
+                                metadata: varifyTokern.metadata,
                                 created_at: Date.now().toString(),
                                 status: Status.PROCESS,
                                 paid: false
@@ -88,7 +96,6 @@ export class SessionController {
                                 }
                             }
                         }
-
 
                         return Answers.notFound('Session is not created');
 
