@@ -29,7 +29,7 @@ app.post('/merchant/signup', async ({body}: {body: Signup}) => await MerchantCon
 *** Session create | verify
 */
 // app.post('/session', ({body: InitSessionData}: {body: InitSessionData}) => SessionController.CreateSession(InitSessionData));
-app.post('/session', ({body: token}: {body: string}) => SessionController.CreateSession(token));
+app.post('/session', ({body: token}: {body: {token: string}}) => SessionController.CreateSession(token));
 
 app.post('/session/verify', () => {})
 
