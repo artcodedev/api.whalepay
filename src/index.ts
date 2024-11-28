@@ -15,13 +15,6 @@ const app = new Elysia()
 */
 app.get("/", () => "No correct parameters :(");
 
-
-app.get('/some', () => {
-  Logger.write(process.env.ERROR_LOGS, 'some');
-
-  return "log"
-})
-
 app.get("/test", async ({query}: {query: MerchantByUID}) => query);
 
 /*
