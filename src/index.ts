@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 
 import {SessionController} from '../src/Controllers/SessionController'
-import { InitSessionData } from '../src/Models/SessionModels';
+import { InitSessionData, InitSessionFetchRequestData } from '../src/Models/SessionModels';
 
 import {MerchantController} from '../src/Controllers/MerchantController';
 
@@ -20,18 +20,20 @@ app.get("/test", async ({query}: {query: MerchantByUID}) => query);
 /*
 *** Merchant sinnup | auth  
 */
-app.get('/merchant/', async ({query}: {query: MerchantByUID}) => await MerchantController.getMerchantByUID(query));
-app.post('/merchant/auth', async ({body} : {body: Auth}) => await MerchantController.auth(body));
-app.post('/merchant/signup', async ({body}: {body: Signup}) => await MerchantController.signup(body));
+app.get('/api/merchant/', async ({query}: {query: MerchantByUID}) => await MerchantController.getMerchantByUID(query));
+app.post('/api/merchant/auth', async ({body} : {body: Auth}) => await MerchantController.auth(body));
+app.post('/api/merchant/signup', async ({body}: {body: Signup}) => await MerchantController.signup(body));
 
 
 /*
 *** Session create | verify
 */
 // app.post('/session', ({body: InitSessionData}: {body: InitSessionData}) => SessionController.CreateSession(InitSessionData));
-app.post('/session', ({body: token}: {body: {token: string}}) => SessionController.CreateSession(token));
+app.post('/api/session', ({body: token}: {body: {token: string}}) => SessionController.CreateSession(token));
 
-app.post('/session/verify', () => {})
+app.get('/api/session/verify', ({query} : {query: InitSessionFetchRequestData}) => SessionController.VarifySession(query))
+
+// app.post('/session/verify', () => {})
 
 /*
 *** Start app listen port 
@@ -109,6 +111,12 @@ CREATE SCHEMA schema_name
 
 
 
-
+\? list all the commands
+\l list databases
+\c onninfo display information about current connection
+\c [DBNAME] connect to new database, e.g., \c template1
+\dt list tables of the public schema
+\dt <schema-name>.* list tables of certain schema, e.g., \dt public.*
+\dt *.* list tables of all schemas
 
 */

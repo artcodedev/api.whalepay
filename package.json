@@ -7,7 +7,8 @@
     "build": "bun build src/index.ts --target bun --outdir ./dist",
     "start": "NODE_ENV=production bun dist/index.js",
     "prod": "bun run --hot src/index.ts",
-    "migrate": "bun prisma migrate dev"
+    "migrate": "bun prisma migrate dev",
+    "resetdb": "bun prisma migrate reset"
   },
   "dependencies": {
     "@prisma/client": "5.22.0",

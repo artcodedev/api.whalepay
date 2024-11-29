@@ -53,6 +53,7 @@ model Merchant {
   sessions   Session[]
   Withdraws  Withdraw[]
   created_at String
+  status     Boolean
 }
 
 model Session {

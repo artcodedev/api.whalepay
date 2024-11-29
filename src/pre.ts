@@ -3,21 +3,28 @@ import { Currency } from "@prisma/client";
 import jsonwebtoken from "jsonwebtoken";
 import {SecretKey} from '../src/Secure/SeckretKey'
 
+import { fromString } from 'uuidv4'
+import { password } from "bun";
 
+// console.log(fromString('the native web'));
+
+
+
+// cdb63720-9628-5ef6-bbca-2e5ce6094f3c
 
 
 (async () => {
 
     const js = {
 
-        merchant_uid: "18a1772c-e13f-4c51-9439-30f6b7704c12", 
-        secret_key: "$2b$04$n3noeHzFau85HDp4kXIuvuC5e8/hq3l2uM9DIqteqAIrm2Ker4Cmy",
-        amount: 10,
-        currency: "RUB",
-        domain: "pisun",
-        callback: "call",
-        description: "some",
-        metadata: "data"
+        // merchant_uid: "18a1772c-e13f-4c51-9439-30f6b7704c12", 
+        // secret_key: "$2b$04$n3noeHzFau85HDp4kXIuvuC5e8/hq3l2uM9DIqteqAIrm2Ker4Cmy",
+        // amount: 10,
+        // currency: "RUB",
+        // domain: "pisun",
+        // callback: "call",
+        // description: "some",
+        // metadata: "data"
 
         // merchant_uid: "18a1772c-e13f-4c51-9439-30f6b7704c12",
         // secret_key: "$2b$04$n3noeHzFau85HDp4kXIuvuC5e8/hq3l2uM9DIqteqAIrm2Ker4Cmy",
@@ -27,16 +34,24 @@ import {SecretKey} from '../src/Secure/SeckretKey'
         // callback: "user.pph",
         // description: "des111",
         // metadata: 'metadata111'
+
+        // phone: "+8098098098",
+        // email: "userpisun@gmail.com",
+        // name: "OOO Pisun",
+        login: "pisunlogin",
+        password: "posunpass",
+        session: true
+
     }
 
-
-    const data = jsonwebtoken.sign(js, SecretKey.secret_key, { expiresIn: "24h" });
+    const secret_key =  "$2b$04$6LMWcuftNGJPQQF0/mpifeY2XjIXA2yBSIamZmbrkYlrVUX9dTGWS";
+    // const data = jsonwebtoken.sign(js, secret_key,  { expiresIn: "24h" });
 
     // console.log(data);
 
-    const response = await fetch("localhost:5000/session", {
+    const response = await fetch("localhost:5000/api/merchant/auth", {
         method: "POST",
-        body: JSON.stringify({token: data}),
+        body: JSON.stringify(js),
         headers: { "Content-Type": "application/json" },
     });
     const html = await response.json();
@@ -53,24 +68,12 @@ import {SecretKey} from '../src/Secure/SeckretKey'
 
 
 {
-  id: 10,
-  uid: "18a1772c-e13f-4c51-9439-30f6b7704c12",
-  name: "user1",
-  login: "user1login11111",
-  password: "$2b$15$w3MbCM2kUgvDnmeRHcsH2.wvs2tol.QpzSQMIAgUZPsdEWv6.TEDu",
-  phone: "+79999999999",
-  email: "user1@gmail.com",
-  secret_key: "$2b$04$n3noeHzFau85HDp4kXIuvuC5e8/hq3l2uM9DIqteqAIrm2Ker4Cmy",
-  created_at: "1732768421381",
+  status: 200,
+  data: {
+    uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
+    secret_key: "$2b$04$6LMWcuftNGJPQQF0/mpifeY2XjIXA2yBSIamZmbrkYlrVUX9dTGWS",
+  },
 }
-
-
-{
-  status: 20,
-  message: "Merchant successfully created",
-  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxOGExNzcyYy1lMTNmLTRjNTEtOTQzOS0zMGY2Yjc3MDRjMTIiLCJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImxvZ2luIjoidXNlcjFsb2dpbjExMTExIiwicGhvbmUiOiIrNzk5OTk5OTk5OTkiLCJuYW1lIjoidXNlcjEiLCJzZWNyZXRfa2V5IjoiJDJiJDA0JG4zbm9lSHpGYXU4NUhEcDRrWEl1dnVDNWU4L2hxM2wydU05RElxdGVxQUlybTJLZXI0Q215IiwiaWF0IjoxNzMyNzY4NDIxLCJleHAiOjE3MzI4NTQ4MjF9.eX8EEjAtvZrpPQqsC0nPc_zehZ0_DFS_9uAcgxl2VlQ",
-}
-
 
 
 

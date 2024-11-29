@@ -135,7 +135,10 @@ export class SessionController {
                     const session = await Prisma.client.session.findUnique({ where: { uid: session_uid } });
 
                     if (session) {
+
                         const payment = await Prisma.client.payment.findUnique({ where: { session_uid: session.uid } })
+
+                        console.log(payment)
 
                         if (payment) {
 
@@ -253,7 +256,6 @@ export class SessionController {
         }
 
     }
-
 
 }
 
