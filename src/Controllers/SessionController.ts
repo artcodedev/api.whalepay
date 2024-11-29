@@ -1,5 +1,4 @@
-import { InitSessionData, InitSessionDataResponse, InitSessionFetchRequestData } from "../Models/SessionModels";
-import { v4 as uuidv4 } from 'uuid';
+import { InitSessionDataResponse, InitSessionFetchRequestData } from "../Models/SessionModels";
 import { Prisma } from "../Utils/Prisma";
 import { Console } from '../Utils/Console';
 import { AnswersError } from "../Models/Answers/AnswersError";
@@ -44,8 +43,9 @@ export class SessionController {
     private static async VarifyToket(token: string): Promise<boolean> {
 
         try {
-            const varify: string | JwtPayload = jsonwebtoken.verify(token, SecretKey.secret_key)
+            const varify: string | JwtPayload = jsonwebtoken.verify(token, SecretKey.secret_key);
             return varify ? true : false;
+
         } catch (e) {
             return false
         }

@@ -37,7 +37,14 @@ export class MerchantController {
 
                         const time_live: number = session ? 600 : 5
 
-                        const token: string = jsonwebtoken.sign({uid: merchant.uid}, SecretKey.secret_key, { expiresIn: time_live });
+                        const token: string = jsonwebtoken.sign(
+
+                            {uid: merchant.uid},
+
+                            SecretKey.secret_key,
+                            
+                            { expiresIn: Math.floor(Date.now() / 1000) + (time_live * 60)}
+                        );
 
                         return { status: 200, token: token };
                     }

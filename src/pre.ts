@@ -17,9 +17,9 @@ import { password } from "bun";
 
   const js = {
 
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzI4NjIyMTksImV4cCI6MTczMjg2MjIyNH0.rm4fYlp1QwDfO5GsOtuJ4SUHl_ZtBcs-N6ckWPNxKbY",
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzI4NjM1ODEsImV4cCI6MzQ2NTc2MzE2Mn0.tO5YRqVIQye8b1ta8KKlU1fv05fywdRRoa8T6qQSZ24",
     data: {
-      merchant_uid: "18a1772c-e13f-4c51-9439-30f6b7704c12",
+      merchant_uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
       amount: 10,
       currency: "RUB",
       domain: "pisun",
@@ -30,19 +30,19 @@ import { password } from "bun";
 
 
 
-        // merchant_uid: "18a1772c-e13f-4c51-9439-30f6b7704c12",
-        // secret_key: "$2b$04$n3noeHzFau85HDp4kXIuvuC5e8/hq3l2uM9DIqteqAIrm2Ker4Cmy",
-        // amount: 10,
-        // currency: "RUB",
-        // domain: "some.com",
-        // callback: "user.pph",
-        // description: "des111",
-        // metadata: 'metadata111'
+    // merchant_uid: "18a1772c-e13f-4c51-9439-30f6b7704c12",
+    // secret_key: "$2b$04$n3noeHzFau85HDp4kXIuvuC5e8/hq3l2uM9DIqteqAIrm2Ker4Cmy",
+    // amount: 10,
+    // currency: "RUB",
+    // domain: "some.com",
+    // callback: "user.pph",
+    // description: "des111",
+    // metadata: 'metadata111'
 
-        // phone: "+8098098098",
-        // email: "userpisun@gmail.com",
-        // name: "OOO Pisun",
-        // login: "pisunlogin",
+    // phone: "+8098098098",
+    // email: "userpisun@gmail.com",
+    // name: "OOO Pisun",
+    // login: "pisunlogin",
     // password: "posunpass",
     // session: true
 
@@ -54,6 +54,8 @@ import { password } from "bun";
   // console.log(data);
 
   const response = await fetch("localhost:5000/api/session/create", {
+    // const response = await fetch("localhost:5000/api/merchant/auth", {
+
     method: "POST",
     body: JSON.stringify(js),
     headers: { "Content-Type": "application/json" },
@@ -79,6 +81,6 @@ import { password } from "bun";
   },
 }
 
-
+Math.floor(Date.now() / 1000) + (time_live * 60)
 
 */
