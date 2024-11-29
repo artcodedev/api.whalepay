@@ -48,7 +48,7 @@ export interface InitSessionData {
     domain: string
     callback: string,
     description: string
-    metadata: any
+    metadata: any   
 }
 
 export interface InitSessionDataRequest {

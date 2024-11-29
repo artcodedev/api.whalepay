@@ -61,7 +61,6 @@ model Session {
   uid         String    @unique
   merchant    Merchant  @relation(fields: [merchant_id], references: [id])
   merchant_id Int
-  secret_key  String
   amount      Float
   currency    Currency
   status      Status
@@ -91,6 +90,7 @@ model Payment {
   card_id          Int
   created_at       String
   trx              String?
+  back_uid         String
 }
 
 model Card {
@@ -129,5 +129,5 @@ model Banks {
   id     Int     @id @default(autoincrement())
   title  String
   status Boolean
-  uid    String
+  uid    String  @unique
 }

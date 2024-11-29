@@ -29,9 +29,9 @@ app.post('/api/merchant/signup', async ({body}: {body: Signup}) => await Merchan
 *** Session create | verify
 */
 // app.post('/session', ({body: InitSessionData}: {body: InitSessionData}) => SessionController.CreateSession(InitSessionData));
-app.post('/api/session/create', async ({body}: {body:  InitSessionDataRequest}) => await SessionController.CreateSession(body));
+app.post('/api/session/create', async ({body}: {body: InitSessionDataRequest}) => await SessionController.CreateSession(body));
 
-app.get('/api/session/verify', ({query} : {query: InitSessionFetchRequestData}) => SessionController.VarifySession(query))
+app.post('/api/session/verify', async ({body} : {body: InitSessionFetchRequestData}) => await SessionController.VarifySession(body));
 
 // app.post('/session/verify', () => {})
 

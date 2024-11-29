@@ -33,8 +33,5 @@ export interface InitSessionDataResponse {
 }
 
 export interface InitSessionFetchRequestData {
-    merchant_uid: string
     session_uid: string
-    tag?: string,
-    payment_type?: PaymentType
 }

@@ -13,20 +13,24 @@ import { password } from "bun";
 // cdb63720-9628-5ef6-bbca-2e5ce6094f3c
 
 
+
+
 (async () => {
 
   const js = {
 
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzI4NjM1ODEsImV4cCI6MzQ2NTc2MzE2Mn0.tO5YRqVIQye8b1ta8KKlU1fv05fywdRRoa8T6qQSZ24",
-    data: {
-      merchant_uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
-      amount: 10,
-      currency: "RUB",
-      domain: "pisun",
-      callback: "call",
-      description: "some",
-      metadata: "data"
-    }
+    session_uid: "some"
+
+    // token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzI4NzI5MzcsImV4cCI6MzQ2NTc0NjE3NH0.hIitVslYQIgmsVfmN_aIUoruE33sgAasoT8kAqstDRQ",
+    // data: {
+    //   merchant_uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
+    //   amount: 10,
+    //   currency: "RUB",
+    //   domain: "pisun",
+    //   callback: "call",
+    //   description: "some",
+    //   metadata: "data"
+    // }
 
 
 
@@ -43,7 +47,7 @@ import { password } from "bun";
     // email: "userpisun@gmail.com",
     // name: "OOO Pisun",
     // login: "pisunlogin",
-    // password: "posunpass",
+    // password: "posunpass"
     // session: true
 
   }
@@ -53,8 +57,10 @@ import { password } from "bun";
 
   // console.log(data);
 
-  const response = await fetch("localhost:5000/api/session/create", {
+  // const response = await fetch("localhost:5000/api/session/create", {
     // const response = await fetch("localhost:5000/api/merchant/auth", {
+    // const response = await fetch("localhost:5000/api/merchant/signup", {
+  const response = await fetch("http://localhost:5000/api/session/verify", {
 
     method: "POST",
     body: JSON.stringify(js),
@@ -71,16 +77,46 @@ import { password } from "bun";
 
 /*
 
-
-
-{
-  status: 200,
+status: 200,
   data: {
     uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
-    secret_key: "$2b$04$6LMWcuftNGJPQQF0/mpifeY2XjIXA2yBSIamZmbrkYlrVUX9dTGWS",
+    secret_key: "$2b$04$ff2ioaBN0TjpW1wHiFEmU.OndttgaiX50kDQnfJXMLvZnvwBetOB2",
+  },
+
+
+
+  {
+  status: 200,
+  data: {
+    session_uid: "f1a1a0d0-bf91-5d2f-9f23-b6137f3d3095",
+    merchant_uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
+    status: "PROCESS",
+    currency: "RUB",
+    paid: false,
+    amount: 10,
+    created_at: "1732873432592",
+    description: "some",
+    metadata: "data",
+    domain: "pisun",
+    gateway: "http://127.0.0.1:3000/payment?session_uid=f1a1a0d0-bf91-5d2f-9f23-b6137f3d3095",
   },
 }
 
-Math.floor(Date.now() / 1000) + (time_live * 60)
-
 */
+
+
+
+import { Prisma } from "../src/Utils/Prisma";
+
+
+
+// (async () => {
+
+
+//   const backs = await Prisma.client.merchant.findMany();
+
+//     console.log(backs)
+
+
+
+// })()

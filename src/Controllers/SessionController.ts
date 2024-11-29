@@ -29,13 +29,26 @@ interface VarifySessionResponsePayment {
     payment_id?: number
 }
 
-interface VarifySessionResponse {
+interface VarifySessionResponseData {
     session: VarifySessionResponseSession
     payment?: VarifySessionResponsePayment
     domain?: string
 }
 
+interface VarifySessionResponse {
+    status: number
+    data?: VarifySessionResponseData
+}
+
+
 export class SessionController {
+
+    /*
+    *** Get Random number
+    */
+    private static getRandomArbitrary(min: number, max: number): number {
+        return Math.random() * (max - min) + min;
+    }
 
     /*
     *** Check varify token
@@ -69,7 +82,9 @@ export class SessionController {
 
                     if (merchant) {
 
-                        const uidst: string = `${merchant.login}${merchant.password}${merchant.email}${merchant.name}${merchant.phone}${SecretKey.secret_key}`;
+                        const random: number = SessionController.getRandomArbitrary(100000, 99999999999);
+
+                        const uidst: string = `${merchant.login}${merchant.password}${merchant.email}${merchant.name}${merchant.phone}${SecretKey.secret_key}${Date.now()}${random}`;
 
                         const uid: string = fromString(uidst);
 
@@ -77,7 +92,6 @@ export class SessionController {
                             data: {
                                 uid: uid,
                                 merchant_id: merchant.id,
-                                secret_key: merchant.secret_key,
                                 amount: data.amount,
                                 currency: Currency[data.currency],
                                 description: data.description,
@@ -103,7 +117,9 @@ export class SessionController {
                                     description: session.description,
                                     metadata: session.metadata,
                                     domain: session.domain,
-                                    gateway: `${process.env.FRONTEND}/payment?merchant_uid=${merchant.uid}&session_uid=${session.uid}`
+                                    gateway: `${process.env.FRONTEND}/payment?session_uid=${session.uid}`
+
+                                    // gateway: `${process.env.FRONTEND}/payment?merchant_uid=${merchant.uid}&session_uid=${session.uid}`
                                 }
                             }
                         }
@@ -131,21 +147,23 @@ export class SessionController {
     /*
     *** Varify Session
     */
-    public static async VarifySession({ merchant_uid, session_uid }: InitSessionFetchRequestData): Promise<AnswersError | VarifySessionResponse> {
+    public static async VarifySession({ session_uid }: InitSessionFetchRequestData): Promise<AnswersError | VarifySessionResponse> {
 
         try {
 
-            if (merchant_uid && session_uid) {
-                const merchant = await Prisma.client.merchant.findUnique({ where: { uid: merchant_uid } });
+            if ( session_uid) {
+                const session = await Prisma.client.session.findUnique({ where: { uid: session_uid } });
 
-                if (merchant) {
-                    const session = await Prisma.client.session.findUnique({ where: { uid: session_uid } });
+                
 
-                    if (session) {
+                if (session) {
+                    const merchant = await Prisma.client.merchant.findUnique({ where: { id: session.merchant_id} });
+
+                    console.log(merchant)
+
+                    if (merchant) {
 
                         const payment = await Prisma.client.payment.findUnique({ where: { session_uid: session.uid } })
-
-                        console.log(payment)
 
                         if (payment) {
 
@@ -155,6 +173,7 @@ export class SessionController {
                             if (session.status === "PENDING") {
 
                                 if (Date.now() >= Number(payment.created_at) + 840000) {
+
                                     await Prisma.client.payment.update({
                                         where: { session_uid: session.uid },
                                         data: { time_closed: Date.now().toString(), }
@@ -168,25 +187,32 @@ export class SessionController {
                                         data: { busy: false }
                                     })
 
-                                    return { session: { status: "EXITED" } }
+                                    return { status: 200, data: {session: { status: "EXITED" }} }
+
                                 } else {
+
                                     const card = await Prisma.client.card.findUnique({ where: { id: payment.card_id } });
+
                                     if (card) {
                                         return {
-                                            session: {
-                                                status: session.status,
-                                                currency: session.currency,
-                                                amount: session.amount,
-                                                timeout: Number(payment.created_at) + 840000 - Date.now()
-                                            },
-                                            payment: {
-                                                payment_type: payment.payment_type,
-                                                card_details: {
-                                                    card_reciever: card.card_receiver,
-                                                    card_number: card.card_number
-                                                }
-                                            },
-                                            domain: session.domain
+                                            
+                                            status: 200,
+                                            data: {
+                                                session: {
+                                                    status: session.status,
+                                                    currency: session.currency,
+                                                    amount: session.amount,
+                                                    timeout: Number(payment.created_at) + 840000 - Date.now()
+                                                },
+                                                payment: {
+                                                    payment_type: payment.payment_type,
+                                                    card_details: {
+                                                        card_reciever: card.card_receiver,
+                                                        card_number: card.card_number
+                                                    }
+                                                },
+                                                domain: session.domain
+                                            }
                                         }
                                     }
 
@@ -202,18 +228,21 @@ export class SessionController {
                                 const card = await Prisma.client.card.findUnique({ where: { id: payment.card_id } })
                                 if (card) {
                                     return {
-                                        session: {
-                                            status: session.status,
-                                            currency: session.currency,
-                                            amount: session.amount,
-                                            email: payment.email
-                                        },
-                                        payment: {
-                                            payment_type: payment.payment_type,
-                                            payment_id: payment.id
-
-                                        },
-                                        domain: session.domain
+                                        status: 200,
+                                        data: {
+                                            session: {
+                                                status: session.status,
+                                                currency: session.currency,
+                                                amount: session.amount,
+                                                email: payment.email
+                                            },
+                                            payment: {
+                                                payment_type: payment.payment_type,
+                                                payment_id: payment.id
+    
+                                            },
+                                            domain: session.domain
+                                        }
                                     }
                                 }
                                 return Answers.notFound('Error with card');
@@ -224,10 +253,13 @@ export class SessionController {
                             */
                             if (session.status === "EXITED") {
                                 return {
-                                    session: {
-                                        status: "EXITED"
-                                    },
-                                    domain: session.domain
+                                    status: 200,
+                                    data: {
+                                        session: {
+                                            status: "EXITED"
+                                        },
+                                        domain: session.domain
+                                    }
                                 }
                             }
 
@@ -235,14 +267,38 @@ export class SessionController {
                             *** Status session ERROR
                             */
                             if (session.status === "ERROR") {
-                                return { session: { status: "ERROR" } }
+                                return {
+                                    status: 200,
+                                    data: {
+                                        session: { status: "ERROR" } 
+                                    }
+                                }
                             }
 
 
                             return Answers.notFound('Payment error get status');
+
+                        } else {
+
+                            /*
+                            *** Status session PROCESS
+                            */
+                            if (session.status === "PROCESS") {
+                                return {
+                                    status: 200,
+                                    data: {
+                                        session: {
+                                            status: session.status,
+                                            currency: session.currency,
+                                            amount: session.amount,
+                                        },
+                                        domain: session.domain
+                                    }
+                                }
+                            }
+
                         }
 
-                        return Answers.notFound('Payment error');
                     }
 
                     return Answers.notFound('Session not found');
