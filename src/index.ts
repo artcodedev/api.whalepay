@@ -5,7 +5,7 @@ import { InitSessionData, InitSessionFetchRequestData } from '../src/Models/Sess
 
 import {MerchantController} from '../src/Controllers/MerchantController';
 
-import { Auth, AuthResponse, Signup, TrxList, MerchantByUID } from "../src/Models/MerchantController";
+import { Auth, AuthResponse, Signup, TrxList, MerchantByUID, InitSessionDataRequest } from "../src/Models/MerchantController";
 import { Logger } from "./Utils/Logger";
 const app = new Elysia()
 
@@ -29,7 +29,7 @@ app.post('/api/merchant/signup', async ({body}: {body: Signup}) => await Merchan
 *** Session create | verify
 */
 // app.post('/session', ({body: InitSessionData}: {body: InitSessionData}) => SessionController.CreateSession(InitSessionData));
-app.post('/api/session', ({body: token}: {body: {token: string}}) => SessionController.CreateSession(token));
+app.post('/api/session/create', async ({body}: {body:  InitSessionDataRequest}) => await SessionController.CreateSession(body));
 
 app.get('/api/session/verify', ({query} : {query: InitSessionFetchRequestData}) => SessionController.VarifySession(query))
 

@@ -7,7 +7,9 @@ import { Answers } from "../Utils/Answers";
 import { Currency, Status } from "@prisma/client";
 import { Logger } from "../Utils/Logger";
 import jsonwebtoken, { JwtPayload } from "jsonwebtoken";
-import {SecretKey} from '../Secure/SeckretKey';
+import { SecretKey } from '../Secure/SeckretKey';
+import { InitSessionDataRequest } from "../Models/MerchantController";
+import { fromString } from 'uuidv4'
 
 interface VarifySessionResponseSession {
     status: string
@@ -29,7 +31,7 @@ interface VarifySessionResponsePayment {
 }
 
 interface VarifySessionResponse {
-    session: VarifySessionResponseSession   
+    session: VarifySessionResponseSession
     payment?: VarifySessionResponsePayment
     domain?: string
 }
@@ -39,10 +41,11 @@ export class SessionController {
     /*
     *** Check varify token
     */
-    private static async VarifyToket(token: string): Promise<string | JwtPayload | boolean> {
+    private static async VarifyToket(token: string): Promise<boolean> {
 
         try {
-            return jsonwebtoken.verify(token, SecretKey.secret_key)
+            const varify: string | JwtPayload = jsonwebtoken.verify(token, SecretKey.secret_key)
+            return varify ? true : false;
         } catch (e) {
             return false
         }
@@ -52,31 +55,35 @@ export class SessionController {
     /*
     *** Create new session
     */
-    public static async CreateSession({token}:{token: string}): Promise<AnswersError | InitSessionDataResponse> {
+    public static async CreateSession({ token, data }: InitSessionDataRequest): Promise<AnswersError | InitSessionDataResponse> {
 
         try {
 
-            const varifyTokern: InitSessionData | boolean = await SessionController.VarifyToket(token) as InitSessionData;
+            if (token && data) {
 
-            if (varifyTokern?.secret_key) {
+                const varifyToken: boolean = await SessionController.VarifyToket(token);
 
-                const merchant = await Prisma.client.merchant.findUnique({ where: { uid: varifyTokern.merchant_uid } })
+                if (varifyToken) {
+                    
+                    const merchant = await Prisma.client.merchant.findUnique({ where: { uid: data.merchant_uid } });
 
-                if (merchant) {
+                    if (merchant) {
 
-                    if (merchant.secret_key == varifyTokern.secret_key) {
+                        const uidst: string = `${merchant.login}${merchant.password}${merchant.email}${merchant.name}${merchant.phone}${SecretKey.secret_key}`;
+
+                        const uid: string = fromString(uidst);
 
                         const session = await Prisma.client.session.create({
                             data: {
-                                uid: uuidv4(),
+                                uid: uid,
                                 merchant_id: merchant.id,
                                 secret_key: merchant.secret_key,
-                                amount: varifyTokern.amount,
-                                currency: Currency[varifyTokern.currency],
-                                description: varifyTokern.description,
-                                domain: varifyTokern.domain,
-                                callback: varifyTokern.callback,
-                                metadata: varifyTokern.metadata,
+                                amount: data.amount,
+                                currency: Currency[data.currency],
+                                description: data.description,
+                                domain: data.domain,
+                                callback: data.callback,
+                                metadata: data.metadata,
                                 created_at: Date.now().toString(),
                                 status: Status.PROCESS,
                                 paid: false
@@ -84,7 +91,6 @@ export class SessionController {
                         })
 
                         if (session) {
-
                             return {
                                 status: 200, data: {
                                     session_uid: session.uid,
@@ -106,11 +112,70 @@ export class SessionController {
 
                     }
 
-                    return Answers.notFound('Merchant wrong');
+                    return Answers.notFound("merchand no found");
                 }
 
-                return Answers.notFound('Merchant not found');
+                return Answers.wrong("token is not variated");
+
             }
+
+
+
+            // const varifyTokern: InitSessionData | boolean = await SessionController.VarifyToket(token) as InitSessionData;
+
+            // if (varifyTokern?.secret_key) {
+
+            //     const merchant = await Prisma.client.merchant.findUnique({ where: { uid: varifyTokern.merchant_uid } })
+
+            //     if (merchant) {
+
+            //         if (merchant.secret_key == varifyTokern.secret_key) {
+
+            //             const session = await Prisma.client.session.create({
+            //                 data: {
+            //                     uid: uuidv4(),
+            //                     merchant_id: merchant.id,
+            //                     secret_key: merchant.secret_key,
+            //                     amount: varifyTokern.amount,
+            //                     currency: Currency[varifyTokern.currency],
+            //                     description: varifyTokern.description,
+            //                     domain: varifyTokern.domain,
+            //                     callback: varifyTokern.callback,
+            //                     metadata: varifyTokern.metadata,
+            //                     created_at: Date.now().toString(),
+            //                     status: Status.PROCESS,
+            //                     paid: false
+            //                 }
+            //             })
+
+            //             if (session) {
+
+            //                 return {
+            //                     status: 200, data: {
+            //                         session_uid: session.uid,
+            //                         merchant_uid: merchant.uid,
+            //                         status: Status.PROCESS,
+            //                         currency: session.currency,
+            //                         paid: false,
+            //                         amount: session.amount,
+            //                         created_at: session.created_at,
+            //                         description: session.description,
+            //                         metadata: session.metadata,
+            //                         domain: session.domain,
+            //                         gateway: `${process.env.FRONTEND}/payment?merchant_uid=${merchant.uid}&session_uid=${session.uid}`
+            //                     }
+            //                 }
+            //             }
+
+            //             return Answers.notFound('Session is not created');
+
+            //         }
+
+            //         return Answers.notFound('Merchant wrong');
+            //     }
+
+            //     return Answers.notFound('Merchant not found');
+            // }
 
             return Answers.wrong("not all data has been transferred");
 
@@ -228,7 +293,7 @@ export class SessionController {
                             *** Status session ERROR
                             */
                             if (session.status === "ERROR") {
-                                return {session: {status: "ERROR"}}
+                                return { session: { status: "ERROR" } }
                             }
 
 

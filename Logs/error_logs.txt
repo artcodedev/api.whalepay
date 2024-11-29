@@ -19,3 +19,4 @@
 [+] Thu Nov 28 2024 20:20:47 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: invalid signature
 [+] Thu Nov 28 2024 20:21:09 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: invalid signature
 [+] Thu Nov 28 2024 20:22:19 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: invalid signature
+[+] Fri Nov 29 2024 16:31:44 GMT+1000 (Vladivostok Standard Time) TypeError: undefined is not an object (evaluating 'body.token')
