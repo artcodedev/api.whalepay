@@ -55,7 +55,7 @@ https://www.dmosk.ru/miniinstruktions.php?mini=postgresql-users
 https://stackoverflow.com/questions/18664074/getting-error-peer-authentication-failed-for-user-postgres-when-trying-to-ge
 
 
-******************************************************************************
+*******************************************************************************
 
 all doc http://repo.postgrespro.ru/doc//pgsql/17.2/ru/postgres-A4.pdf
 
