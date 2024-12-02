@@ -1,44 +1,15 @@
-import { InitSessionDataResponse, InitSessionFetchRequestData } from "../Models/SessionModels";
+import { InitSessionDataResponse, InitSessionFetchRequestData, VarifySessionResponse } from "../Models/SessionControllerModels";
 import { Prisma } from "../Utils/Prisma";
 import { Console } from '../Utils/Console';
-import { AnswersError } from "../Models/Answers/AnswersError";
+import { AnswersError } from "../Models/Answers/AnswersErrorModels";
 import { Answers } from "../Utils/Answers";
 import { Currency, Status } from "@prisma/client";
 import { Logger } from "../Utils/Logger";
 import jsonwebtoken, { JwtPayload } from "jsonwebtoken";
 import { SecretKey } from '../Secure/SeckretKey';
-import { InitSessionDataRequest } from "../Models/MerchantController";
+import { InitSessionDataRequest } from "../Models/MerchantControllerModels";
 import { fromString } from 'uuidv4'
 
-interface VarifySessionResponseSession {
-    status: string
-    currency?: string
-    amount?: number
-    timeout?: number
-    email?: string
-}
-
-interface VarifySessionResponsePaymentCardDetails {
-    card_reciever: string
-    card_number: string
-}
-
-interface VarifySessionResponsePayment {
-    payment_type: string
-    card_details?: VarifySessionResponsePaymentCardDetails
-    payment_id?: number
-}
-
-interface VarifySessionResponseData {
-    session: VarifySessionResponseSession
-    payment?: VarifySessionResponsePayment
-    domain?: string
-}
-
-interface VarifySessionResponse {
-    status: number
-    data?: VarifySessionResponseData
-}
 
 
 export class SessionController {
@@ -60,6 +31,7 @@ export class SessionController {
             return varify ? true : false;
 
         } catch (e) {
+            Logger.write(process.env.ERROR_LOGS, e);
             return false
         }
 
@@ -78,57 +50,63 @@ export class SessionController {
 
                 if (varifyToken) {
 
-                    const merchant = await Prisma.client.merchant.findUnique({ where: { uid: data.merchant_uid } });
+                    const activeBanks = await Prisma.client.banks.findMany({ where: { status: true } });
 
-                    if (merchant) {
+                    if (activeBanks) {
+                        const merchant = await Prisma.client.merchant.findUnique({ where: { uid: data.merchant_uid } });
 
-                        const random: number = SessionController.getRandomArbitrary(100000, 99999999999);
+                        if (merchant) {
 
-                        const uidst: string = `${merchant.login}${merchant.password}${merchant.email}${merchant.name}${merchant.phone}${SecretKey.secret_key}${Date.now()}${random}`;
+                            const random: number = SessionController.getRandomArbitrary(100000, 99999999999);
 
-                        const uid: string = fromString(uidst);
+                            const uidst: string = `${merchant.login}${merchant.password}${merchant.email}${merchant.name}${merchant.phone}${SecretKey.secret_key}${Date.now()}${random}`;
 
-                        const session = await Prisma.client.session.create({
-                            data: {
-                                uid: uid,
-                                merchant_id: merchant.id,
-                                amount: data.amount,
-                                currency: Currency[data.currency],
-                                description: data.description,
-                                domain: data.domain,
-                                callback: data.callback,
-                                metadata: data.metadata,
-                                created_at: Date.now().toString(),
-                                status: Status.PROCESS,
-                                paid: false
-                            }
-                        })
+                            const uid: string = fromString(uidst);
 
-                        if (session) {
-                            return {
-                                status: 200, data: {
-                                    session_uid: session.uid,
-                                    merchant_uid: merchant.uid,
+                            const session = await Prisma.client.session.create({
+                                data: {
+                                    uid: uid,
+                                    merchant_id: merchant.id,
+                                    amount: data.amount,
+                                    currency: Currency[data.currency],
+                                    description: data.description,
+                                    domain: data.domain,
+                                    callback: data.callback,
+                                    metadata: data.metadata,
+                                    created_at: Date.now().toString(),
                                     status: Status.PROCESS,
-                                    currency: session.currency,
-                                    paid: false,
-                                    amount: session.amount,
-                                    created_at: session.created_at,
-                                    description: session.description,
-                                    metadata: session.metadata,
-                                    domain: session.domain,
-                                    gateway: `${process.env.FRONTEND}/payment?session_uid=${session.uid}`
+                                    paid: false
+                                }
+                            })
 
-                                    // gateway: `${process.env.FRONTEND}/payment?merchant_uid=${merchant.uid}&session_uid=${session.uid}`
+                            if (session) {
+                                return {
+                                    status: 200, data: {
+                                        session_uid: session.uid,
+                                        merchant_uid: merchant.uid,
+                                        status: Status.PROCESS,
+                                        currency: session.currency,
+                                        paid: false,
+                                        amount: session.amount,
+                                        created_at: session.created_at,
+                                        description: session.description,
+                                        metadata: session.metadata,
+                                        domain: session.domain,
+                                        gateway: `${process.env.FRONTEND}/payment?session_uid=${session.uid}`
+
+                                        // gateway: `${process.env.FRONTEND}/payment?merchant_uid=${merchant.uid}&session_uid=${session.uid}`
+                                    }
                                 }
                             }
+
+                            return Answers.notFound('Session is not created');
+
                         }
 
-                        return Answers.notFound('Session is not created');
-
+                        return Answers.notFound("merchand no found");
                     }
 
-                    return Answers.notFound("merchand no found");
+                    return Answers.notFound("no active banks");
                 }
 
                 return Answers.wrong("token is not variated");
@@ -139,7 +117,7 @@ export class SessionController {
 
         }
         catch (e) {
-            Logger.write(process.env.ERROR_LOGS, e)
+            Logger.write(process.env.ERROR_LOGS, e);
             return Answers.serverError('server error');
         }
     }
@@ -151,15 +129,12 @@ export class SessionController {
 
         try {
 
-            if ( session_uid) {
+            if (session_uid) {
+
                 const session = await Prisma.client.session.findUnique({ where: { uid: session_uid } });
 
-                
-
                 if (session) {
-                    const merchant = await Prisma.client.merchant.findUnique({ where: { id: session.merchant_id} });
-
-                    console.log(merchant)
+                    const merchant = await Prisma.client.merchant.findUnique({ where: { id: session.merchant_id } });
 
                     if (merchant) {
 
@@ -187,7 +162,7 @@ export class SessionController {
                                         data: { busy: false }
                                     })
 
-                                    return { status: 200, data: {session: { status: "EXITED" }} }
+                                    return { status: 200, data: { session: { status: "EXITED" } } }
 
                                 } else {
 
@@ -195,7 +170,7 @@ export class SessionController {
 
                                     if (card) {
                                         return {
-                                            
+
                                             status: 200,
                                             data: {
                                                 session: {
@@ -239,7 +214,7 @@ export class SessionController {
                                             payment: {
                                                 payment_type: payment.payment_type,
                                                 payment_id: payment.id
-    
+
                                             },
                                             domain: session.domain
                                         }
@@ -270,7 +245,7 @@ export class SessionController {
                                 return {
                                     status: 200,
                                     data: {
-                                        session: { status: "ERROR" } 
+                                        session: { status: "ERROR" }
                                     }
                                 }
                             }
@@ -314,7 +289,7 @@ export class SessionController {
         }
 
         catch (e) {
-            Logger.write(process.env.ERROR_LOGS, e)
+            Logger.write(process.env.ERROR_LOGS, e);
             return Answers.serverError('server error');
         }
 

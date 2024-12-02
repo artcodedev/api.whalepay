@@ -1,12 +1,22 @@
 import { Elysia } from "elysia";
 
+/*
+*** Interface models
+*/
+import { InitPaymentData } from './/Models/PaymentControllerModels';
+import { InitSessionFetchRequestData } from './Models/SessionControllerModels';
+import { Auth, Signup, MerchantByUID, InitSessionDataRequest } from "./Models/MerchantControllerModels";
+
+
+/*
+*** Controllers
+*/
+import { BacksController } from "./Controllers/BanksController";
 import {SessionController} from '../src/Controllers/SessionController'
-import { InitSessionData, InitSessionFetchRequestData } from '../src/Models/SessionModels';
-
 import {MerchantController} from '../src/Controllers/MerchantController';
+import { PaymentController } from '../src/Controllers/PaymentController'
 
-import { Auth, AuthResponse, Signup, TrxList, MerchantByUID, InitSessionDataRequest } from "../src/Models/MerchantController";
-import { Logger } from "./Utils/Logger";
+
 const app = new Elysia()
 
 
@@ -21,28 +31,34 @@ app.get("/test", async ({query}: {query: MerchantByUID}) => query);
 *** Merchant sinnup | auth  
 */
 app.get('/api/merchant/', async ({query}: {query: MerchantByUID}) => await MerchantController.getMerchantByUID(query));
+
 app.post('/api/merchant/auth', async ({body} : {body: Auth}) => await MerchantController.auth(body));
+
 app.post('/api/merchant/signup', async ({body}: {body: Signup}) => await MerchantController.signup(body));
 
+/*
+*** Payment actions
+*/
+app.post('/api/payment/init', async ({body}: {body: InitPaymentData}) => await PaymentController.init(body));
+
+/*
+*** Get all active banks
+*/
+app.post('/api/banks', async () => await BacksController.banks());
 
 /*
 *** Session create | verify
 */
-// app.post('/session', ({body: InitSessionData}: {body: InitSessionData}) => SessionController.CreateSession(InitSessionData));
 app.post('/api/session/create', async ({body}: {body: InitSessionDataRequest}) => await SessionController.CreateSession(body));
 
 app.post('/api/session/verify', async ({body} : {body: InitSessionFetchRequestData}) => await SessionController.VarifySession(body));
-
-// app.post('/session/verify', () => {})
 
 /*
 *** Start app listen port 
 */
 app.listen(process.env.BACKEND_PORT || 5000);
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+console.log( `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`);
 
 
 

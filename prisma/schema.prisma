@@ -26,11 +26,8 @@ enum Status {
 }
 
 enum PaymentType {
-  default
   sberbank
   alfabank
-  tinkoff
-  raiffeisen
 }
 
 enum WithdrawStatus {
@@ -74,42 +71,41 @@ model Session {
 }
 
 model Payment {
-  id               Int         @id @default(autoincrement())
+  id               Int     @id @default(autoincrement())
   time_opened      String
   timezone         Int
   browser_version  String
   browser_language String
   ip               String
   email            String
-  payment_type     PaymentType
-  session          Session     @relation(fields: [session_uid], references: [uid], onUpdate: NoAction)
-  session_uid      String      @unique
+  session          Session @relation(fields: [session_uid], references: [uid], onUpdate: NoAction)
+  session_uid      String  @unique
   time_closed      String?
   time_paid        String?
   from             String?
   card_id          Int
   created_at       String
   trx              String?
-  back_uid         String
+  bank_uid         String
 }
 
 model Card {
-  id                 Int         @id @default(autoincrement())
-  payment_type       PaymentType
-  card_number        String      @unique
+  id                 Int     @id @default(autoincrement())
+  card_number        String  @unique
   card_holder        String
   card_receiver      String
   card_cvv           String
   card_valid_thru    String
   card_phone         String
-  card_login         String      @unique
+  card_login         String  @unique
   card_password      String
   card_pin           String
   card_secret        String
   active             Boolean
   busy               Boolean
   balance            Int
-  withdraw_avaliable Boolean     @default(false)
+  withdraw_avaliable Boolean @default(false)
+  bank_uid           String
 }
 
 model Withdraw {
@@ -126,8 +122,8 @@ model Withdraw {
 }
 
 model Banks {
-  id     Int     @id @default(autoincrement())
-  title  String
-  status Boolean
-  uid    String  @unique
+  id          Int         @id @default(autoincrement())
+  title       String
+  status      Boolean
+  uid         String      @unique
 }

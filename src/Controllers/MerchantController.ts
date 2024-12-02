@@ -13,8 +13,9 @@ import {SecretKey} from '../Secure/SeckretKey'
 /*
 *** Interface Models
 */
-import { Auth, AuthResponse, Signup, TrxList, MerchantByUID, SignupResponse } from "../Models/MerchantController";
-import { AnswersError } from '../Models/Answers/AnswersError'
+import { Auth, AuthResponse, Signup, TrxList, MerchantByUID, SignupResponse } from "../Models/MerchantControllerModels";
+import { AnswersError } from '../Models/Answers/AnswersErrorModels'
+import { Logger } from "../Utils/Logger";
 
 
 export class MerchantController {
@@ -58,7 +59,7 @@ export class MerchantController {
             return Answers.wrong("not all data has been transferred");
 
         } catch (e) {
-
+            Logger.write(process.env.ERROR_LOGS, e);
             return Answers.serverError('server error');
 
         }
@@ -119,6 +120,7 @@ export class MerchantController {
             return Answers.wrong("not all data has been transferred");
         }
         catch (e) {
+            Logger.write(process.env.ERROR_LOGS, e);
             return Answers.serverError('server error');
         }
     }
@@ -156,7 +158,7 @@ export class MerchantController {
             return Answers.wrong("not all data has been transferred");
 
         } catch (e) {
-
+            Logger.write(process.env.ERROR_LOGS, e);
             return Answers.serverError('server error');
         }
     }
@@ -187,17 +189,9 @@ export class MerchantController {
 
         }
         catch (e) {
+            Logger.write(process.env.ERROR_LOGS, e);
             return Answers.serverError('server error');
         }
     }
 
 }
-
-/*
-*
-
-{
-   uid: 232323
-   token: sadsoi87238ye921821w
-}
-*/

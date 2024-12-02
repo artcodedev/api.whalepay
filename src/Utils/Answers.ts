@@ -1,5 +1,5 @@
 
-import { AnswersError } from "../Models/Answers/AnswersError";
+import { AnswersError } from "../Models/Answers/AnswersErrorModels";
 
 export class Answers {
 
