@@ -20,3 +20,123 @@
 [+] Thu Nov 28 2024 20:21:09 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: invalid signature
 [+] Thu Nov 28 2024 20:22:19 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: invalid signature
 [+] Fri Nov 29 2024 16:31:44 GMT+1000 (Vladivostok Standard Time) TypeError: undefined is not an object (evaluating 'body.token')
+[+] Tue Dec 03 2024 18:00:34 GMT+1000 (Vladivostok Standard Time) PrismaClientValidationError: 
+Invalid `Prisma.client.session.findUnique()` invocation in
+/home/de/progects/whalepay/api.whalepay/src/Controllers/PaymentController.ts:37:57
+
+  34 
+  35 console.log(init)
+  36 
+→ 37 const session = await Prisma.client.session.findUnique({
+       where: {
+         uid: undefined,
+     ?   id?: Int,
+     ?   AND?: SessionWhereInput | SessionWhereInput[],
+     ?   OR?: SessionWhereInput[],
+     ?   NOT?: SessionWhereInput | SessionWhereInput[],
+     ?   merchant_id?: IntFilter | Int,
+     ?   amount?: FloatFilter | Float,
+     ?   currency?: EnumCurrencyFilter | Currency,
+     ?   status?: EnumStatusFilter | Status,
+     ?   description?: StringFilter | String,
+     ?   paid?: BoolFilter | Boolean,
+     ?   domain?: StringFilter | String,
+     ?   callback?: StringFilter | String,
+     ?   metadata?: JsonFilter,
+     ?   created_at?: StringFilter | String,
+     ?   merchant?: MerchantRelationFilter | MerchantWhereInput,
+     ?   payment?: PaymentListRelationFilter
+       }
+     })
+
+Argument `where` of type SessionWhereUniqueInput needs at least one of `id` or `uid` arguments. Available options are marked with ?.
+[+] Tue Dec 03 2024 18:03:19 GMT+1000 (Vladivostok Standard Time) PrismaClientValidationError: 
+Invalid `Prisma.client.session.findUnique()` invocation in
+/home/de/progects/whalepay/api.whalepay/src/Controllers/PaymentController.ts:37:57
+
+  34 
+  35 console.log(init)
+  36 
+→ 37 const session = await Prisma.client.session.findUnique({
+       where: {
+         uid: undefined,
+     ?   id?: Int,
+     ?   AND?: SessionWhereInput | SessionWhereInput[],
+     ?   OR?: SessionWhereInput[],
+     ?   NOT?: SessionWhereInput | SessionWhereInput[],
+     ?   merchant_id?: IntFilter | Int,
+     ?   amount?: FloatFilter | Float,
+     ?   currency?: EnumCurrencyFilter | Currency,
+     ?   status?: EnumStatusFilter | Status,
+     ?   description?: StringFilter | String,
+     ?   paid?: BoolFilter | Boolean,
+     ?   domain?: StringFilter | String,
+     ?   callback?: StringFilter | String,
+     ?   metadata?: JsonFilter,
+     ?   created_at?: StringFilter | String,
+     ?   merchant?: MerchantRelationFilter | MerchantWhereInput,
+     ?   payment?: PaymentListRelationFilter
+       }
+     })
+
+Argument `where` of type SessionWhereUniqueInput needs at least one of `id` or `uid` arguments. Available options are marked with ?.
+[+] Tue Dec 03 2024 18:04:03 GMT+1000 (Vladivostok Standard Time) PrismaClientValidationError: 
+Invalid `Prisma.client.session.findUnique()` invocation in
+/home/de/progects/whalepay/api.whalepay/src/Controllers/PaymentController.ts:37:57
+
+  34 
+  35 console.log(init)
+  36 
+→ 37 const session = await Prisma.client.session.findUnique({
+       where: {
+         uid: undefined,
+     ?   id?: Int,
+     ?   AND?: SessionWhereInput | SessionWhereInput[],
+     ?   OR?: SessionWhereInput[],
+     ?   NOT?: SessionWhereInput | SessionWhereInput[],
+     ?   merchant_id?: IntFilter | Int,
+     ?   amount?: FloatFilter | Float,
+     ?   currency?: EnumCurrencyFilter | Currency,
+     ?   status?: EnumStatusFilter | Status,
+     ?   description?: StringFilter | String,
+     ?   paid?: BoolFilter | Boolean,
+     ?   domain?: StringFilter | String,
+     ?   callback?: StringFilter | String,
+     ?   metadata?: JsonFilter,
+     ?   created_at?: StringFilter | String,
+     ?   merchant?: MerchantRelationFilter | MerchantWhereInput,
+     ?   payment?: PaymentListRelationFilter
+       }
+     })
+
+Argument `where` of type SessionWhereUniqueInput needs at least one of `id` or `uid` arguments. Available options are marked with ?.
+[+] Tue Dec 03 2024 18:19:40 GMT+1000 (Vladivostok Standard Time) PrismaClientValidationError: 
+Invalid `Prisma.client.session.findUnique()` invocation in
+/home/de/progects/whalepay/api.whalepay/src/Controllers/PaymentController.ts:37:57
+
+  34 
+  35 console.log(init.session_uid)
+  36 
+→ 37 const session = await Prisma.client.session.findUnique({
+       where: {
+         uid: undefined,
+     ?   id?: Int,
+     ?   AND?: SessionWhereInput | SessionWhereInput[],
+     ?   OR?: SessionWhereInput[],
+     ?   NOT?: SessionWhereInput | SessionWhereInput[],
+     ?   merchant_id?: IntFilter | Int,
+     ?   amount?: FloatFilter | Float,
+     ?   currency?: EnumCurrencyFilter | Currency,
+     ?   status?: EnumStatusFilter | Status,
+     ?   description?: StringFilter | String,
+     ?   paid?: BoolFilter | Boolean,
+     ?   domain?: StringFilter | String,
+     ?   callback?: StringFilter | String,
+     ?   metadata?: JsonFilter,
+     ?   created_at?: StringFilter | String,
+     ?   merchant?: MerchantRelationFilter | MerchantWhereInput,
+     ?   payment?: PaymentListRelationFilter
+       }
+     })
+
+Argument `where` of type SessionWhereUniqueInput needs at least one of `id` or `uid` arguments. Available options are marked with ?.

@@ -1,4 +1,4 @@
-import { Currency } from "@prisma/client";
+import { Currency, Session } from "@prisma/client";
 
 import jsonwebtoken from "jsonwebtoken";
 import { SecretKey } from '../src/Secure/SeckretKey'
@@ -13,34 +13,38 @@ import { password } from "bun";
 
 
 
-// import { Prisma } from "../src/Utils/Prisma";
+import { Prisma } from "../src/Utils/Prisma";
 
 
 
-// (async () => {
+(async () => {
+
+//   const updateSesson: Session = await Prisma.client.session.update({
+//     where: { uid: "0282cc9f-f971-52a9-9fa0-d7d76297e3b0" },
+//     data: { status: "PROCESS" },
+// });
+
+  const session = await Prisma.client.payment.findMany();
+
+  console.log(session)
+
+  // const banks = await Prisma.client.banks.createMany({
+  //   data: [
+  //     {
+  //       title: "SBER BANK",
+  //       status: true,
+  //       uid: "111"
+  //     }, 
+  //     {
+  //       title: "ALFA BANK",
+  //       status: true,
+  //       uid: "222"
+  //     }
+  //   ]
+  // });
 
 
-//   const backs = await Prisma.client.banks.findMany();
-
-//   console.log(backs)
-
-//   const banks = await Prisma.client.banks.createMany({
-//     data: [
-//       {
-//         title: "SBER BANK",
-//         status: true,
-//         uid: "111"
-//       }, 
-//       {
-//         title: "ALFA BANK",
-//         status: true,
-//         uid: "222"
-//       }
-//     ]
-//   });
-
-
-// })()
+})()
 
 
 

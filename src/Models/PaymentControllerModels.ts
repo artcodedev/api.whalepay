@@ -12,3 +12,19 @@ export interface InitPaymentData {
     session_uid:      string
 
 }
+
+
+interface InitResponseCard {
+    card_number: string,
+    card_receiver: string,
+}
+
+export interface InitResponse {
+    status: number
+    card_details?: InitPaymentData
+    timeout?: number
+}
+
+export interface GetCard {
+    session_uid: string
+}

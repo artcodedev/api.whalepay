@@ -3,7 +3,7 @@ import { Elysia } from "elysia";
 /*
 *** Interface models
 */
-import { InitPaymentData } from './/Models/PaymentControllerModels';
+import { InitPaymentData, GetCard} from './/Models/PaymentControllerModels';
 import { InitSessionFetchRequestData } from './Models/SessionControllerModels';
 import { Auth, Signup, MerchantByUID, InitSessionDataRequest } from "./Models/MerchantControllerModels";
 
@@ -40,6 +40,8 @@ app.post('/api/merchant/signup', async ({body}: {body: Signup}) => await Merchan
 *** Payment actions
 */
 app.post('/api/payment/init', async ({body}: {body: InitPaymentData}) => await PaymentController.init(body));
+
+app.post('/api/payment/getcard', async ({body}: {body: GetCard}) => await PaymentController.getCard(body));
 
 /*
 *** Get all active banks

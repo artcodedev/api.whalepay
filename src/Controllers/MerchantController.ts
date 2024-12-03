@@ -28,7 +28,7 @@ export class MerchantController {
         try {
 
             if (login && password) {
-                const merchant = await Prisma.client.merchant.findUnique({
+                const merchant: Merchant | null = await Prisma.client.merchant.findUnique({
                     where: { login }
                 });
 
@@ -74,7 +74,7 @@ export class MerchantController {
 
             if (login && password && email && name && phone) {
 
-                const mechantLogin = await Prisma.client.merchant.findUnique({ where: { login: login, password: password } });
+                const mechantLogin: Merchant | null = await Prisma.client.merchant.findUnique({ where: { login: login, password: password } });
 
                 if (!mechantLogin) {
 
@@ -86,7 +86,7 @@ export class MerchantController {
 
                     const pass_sha: string = await bcrypt.hash(password, 15);
 
-                    const merchant = await Prisma.client.merchant.create({
+                    const merchant: Merchant = await Prisma.client.merchant.create({
                         data: {
                             phone,
                             email,
@@ -170,12 +170,12 @@ export class MerchantController {
         try {
 
             if (merchant_uid && session_uid) {
-                const merchant = await Prisma.client.merchant.findUnique({
+                const merchant: Merchant | null = await Prisma.client.merchant.findUnique({
                     where: { uid: merchant_uid },
                 });
 
                 if (merchant) {
-                    const session = await Prisma.client.session.findUnique({
+                    const session: Session | null = await Prisma.client.session.findUnique({
                         where: { uid: session_uid },
                     });
 

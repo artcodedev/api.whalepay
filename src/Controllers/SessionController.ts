@@ -133,12 +133,19 @@ export class SessionController {
 
                 const session: Session | null = await Prisma.client.session.findUnique({ where: { uid: session_uid } });
 
+                // console.log(session)
+
                 if (session) {
+
                     const merchant: Merchant | null = await Prisma.client.merchant.findUnique({ where: { id: session.merchant_id } });
+
+                    // console.log(merchant)
 
                     if (merchant) {
 
                         const payment: Payment | null = await Prisma.client.payment.findUnique({ where: { session_uid: session.uid } })
+
+                        console.log(payment)
 
                         if (payment) {
 
@@ -149,7 +156,7 @@ export class SessionController {
                                 */
                                 if (session.status === "PENDING_CARD") {
                                     return {
-                                        status: 444,
+                                        status: 200,
                                         data: {
                                             session: { status: session.status }
                                         }

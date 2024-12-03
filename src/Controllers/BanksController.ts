@@ -5,13 +5,14 @@ import { Logger } from "../Utils/Logger";
 import { Answers } from "../Utils/Answers";
 import { AnswersError } from "../Models/Answers/AnswersErrorModels";
 import { BanksResponse, BanksResponseData} from '../Models/BacksControllerModels';
+import { Banks } from "@prisma/client";
 
 export class BacksController {
 
     public static async banks(): Promise<BanksResponse | AnswersError> {
         try {
 
-            const backs = await Prisma.client.banks.findMany({where: {status: true}});
+            const backs: Banks[] = await Prisma.client.banks.findMany({where: {status: true}});
             
             if (backs) {
 
@@ -30,6 +31,7 @@ export class BacksController {
         }
         catch(e) {
             Logger.write(process.env.ERROR_LOGS, e);
+            console.log(e)
             return Answers.serverError('server error');
         }
     }
