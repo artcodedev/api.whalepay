@@ -19,7 +19,8 @@ enum Currency {
 
 enum Status {
   PROCESS
-  PENDING
+  PENDING_PAY
+  PENDING_CARD
   SUCCESS
   ERROR
   EXITED
@@ -48,7 +49,7 @@ model Merchant {
   email      String
   secret_key String
   sessions   Session[]
-  Withdraws  Withdraw[]
+  Withdraws  Withdraw[] 
   created_at String
   status     Boolean
 }
@@ -83,7 +84,7 @@ model Payment {
   time_closed      String?
   time_paid        String?
   from             String?
-  card_id          Int
+  card_id          Int?
   created_at       String
   trx              String?
   bank_uid         String

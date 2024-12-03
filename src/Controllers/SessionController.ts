@@ -3,7 +3,7 @@ import { Prisma } from "../Utils/Prisma";
 import { Console } from '../Utils/Console';
 import { AnswersError } from "../Models/Answers/AnswersErrorModels";
 import { Answers } from "../Utils/Answers";
-import { Currency, Status } from "@prisma/client";
+import { Currency, Status, Session, Merchant, Payment, Banks } from "@prisma/client";
 import { Logger } from "../Utils/Logger";
 import jsonwebtoken, { JwtPayload } from "jsonwebtoken";
 import { SecretKey } from '../Secure/SeckretKey';
@@ -50,10 +50,10 @@ export class SessionController {
 
                 if (varifyToken) {
 
-                    const activeBanks = await Prisma.client.banks.findMany({ where: { status: true } });
+                    const activeBanks: Banks[] | null = await Prisma.client.banks.findMany({ where: { status: true } });
 
                     if (activeBanks) {
-                        const merchant = await Prisma.client.merchant.findUnique({ where: { uid: data.merchant_uid } });
+                        const merchant: Merchant | null = await Prisma.client.merchant.findUnique({ where: { uid: data.merchant_uid } });
 
                         if (merchant) {
 
@@ -131,133 +131,163 @@ export class SessionController {
 
             if (session_uid) {
 
-                const session = await Prisma.client.session.findUnique({ where: { uid: session_uid } });
+                const session: Session | null = await Prisma.client.session.findUnique({ where: { uid: session_uid } });
 
                 if (session) {
-                    const merchant = await Prisma.client.merchant.findUnique({ where: { id: session.merchant_id } });
+                    const merchant: Merchant | null = await Prisma.client.merchant.findUnique({ where: { id: session.merchant_id } });
 
                     if (merchant) {
 
-                        const payment = await Prisma.client.payment.findUnique({ where: { session_uid: session.uid } })
+                        const payment: Payment | null = await Prisma.client.payment.findUnique({ where: { session_uid: session.uid } })
 
                         if (payment) {
 
-                            /*
-                            *** Status session PENDING
-                            */
-                            if (session.status === "PENDING") {
+                            if (!payment.card_id && payment.bank_uid) {
 
-                                if (Date.now() >= Number(payment.created_at) + 840000) {
+                                /*
+                                *** Status session PENDING_CARD
+                                */
+                                if (session.status === "PENDING_CARD") {
+                                    return {
+                                        status: 444,
+                                        data: {
+                                            session: { status: session.status }
+                                        }
+                                    }
+                                }
 
-                                    await Prisma.client.payment.update({
-                                        where: { session_uid: session.uid },
-                                        data: { time_closed: Date.now().toString(), }
-                                    })
-                                    await Prisma.client.session.update({
-                                        where: { uid: session.uid },
-                                        data: { status: "EXITED", paid: false }
-                                    })
-                                    await Prisma.client.card.update({
-                                        where: { id: payment.card_id },
-                                        data: { busy: false }
-                                    })
+                                return Answers.notFound('error checking status');
 
-                                    return { status: 200, data: { session: { status: "EXITED" } } }
+                                
+                            } else {
 
-                                } else {
 
-                                    const card = await Prisma.client.card.findUnique({ where: { id: payment.card_id } });
+                                if (payment.card_id) {
 
-                                    if (card) {
+                                    /*
+                                    *** Status session PENDING_PAY
+                                    */
+                                    if (session.status === "PENDING_PAY") {
+
+                                        if (Date.now() >= Number(payment.created_at) + 840000) {
+
+                                            await Prisma.client.payment.update({
+                                                where: { session_uid: session.uid },
+                                                data: { time_closed: Date.now().toString(), }
+                                            })
+                                            await Prisma.client.session.update({
+                                                where: { uid: session.uid },
+                                                data: { status: session.status, paid: false }
+                                            })
+
+                                            await Prisma.client.card.update({
+                                                where: { id: payment.card_id },
+                                                data: { busy: false }
+                                            })
+
+                                            return { status: 200, data: { session: { status: session.status } } }
+
+
+
+                                        } else {
+
+                                            const card = await Prisma.client.card.findUnique({ where: { id: payment.card_id } });
+
+                                            if (card) {
+                                                return {
+
+                                                    status: 200,
+                                                    data: {
+                                                        session: {
+                                                            status: session.status,
+                                                            currency: session.currency,
+                                                            amount: session.amount,
+                                                            timeout: Number(payment.created_at) + 840000 - Date.now()
+                                                        },
+                                                        payment: {
+                                                            payment_type: payment.bank_uid,
+                                                            card_details: {
+                                                                card_reciever: card.card_receiver,
+                                                                card_number: card.card_number
+                                                            }
+                                                        },
+                                                        domain: session.domain
+                                                    }
+                                                }
+                                            }
+
+                                            return Answers.notFound('Error with card');
+                                        }
+
+                                    }
+
+                                    /*
+                                    *** Status session SUCCESS
+                                    */
+                                    if (session.status === "SUCCESS") {
+                                        const card = await Prisma.client.card.findUnique({ where: { id: payment.card_id } })
+                                        if (card) {
+                                            return {
+                                                status: 200,
+                                                data: {
+                                                    session: {
+                                                        status: session.status,
+                                                        currency: session.currency,
+                                                        amount: session.amount,
+                                                        email: payment.email
+                                                    },
+                                                    payment: {
+                                                        payment_type: payment.bank_uid,
+                                                        payment_id: payment.id
+
+                                                    },
+                                                    domain: session.domain
+                                                }
+                                            }
+                                        }
+                                        return Answers.notFound('Error with card');
+                                    }
+
+                                    /*
+                                    *** Status session EXITED
+                                    */
+                                    if (session.status === "EXITED") {
                                         return {
-
                                             status: 200,
                                             data: {
                                                 session: {
-                                                    status: session.status,
-                                                    currency: session.currency,
-                                                    amount: session.amount,
-                                                    timeout: Number(payment.created_at) + 840000 - Date.now()
-                                                },
-                                                payment: {
-                                                    payment_type: payment.payment_type,
-                                                    card_details: {
-                                                        card_reciever: card.card_receiver,
-                                                        card_number: card.card_number
-                                                    }
+                                                    status: "EXITED"
                                                 },
                                                 domain: session.domain
                                             }
                                         }
                                     }
 
-                                    return Answers.notFound('Error with card');
-                                }
-
-                            }
-
-                            /*
-                            *** Status session SUCCESS
-                            */
-                            if (session.status === "SUCCESS") {
-                                const card = await Prisma.client.card.findUnique({ where: { id: payment.card_id } })
-                                if (card) {
-                                    return {
-                                        status: 200,
-                                        data: {
-                                            session: {
-                                                status: session.status,
-                                                currency: session.currency,
-                                                amount: session.amount,
-                                                email: payment.email
-                                            },
-                                            payment: {
-                                                payment_type: payment.payment_type,
-                                                payment_id: payment.id
-
-                                            },
-                                            domain: session.domain
+                                    /*
+                                    *** Status session ERROR
+                                    */
+                                    if (session.status === "ERROR") {
+                                        return {
+                                            status: 200,
+                                            data: {
+                                                session: { status: "ERROR" }
+                                            }
                                         }
                                     }
+
+                                    return Answers.notFound('Payment error get status');
                                 }
-                                return Answers.notFound('Error with card');
+
+                                return Answers.notFound('Card not found');
+
                             }
-
-                            /*
-                            *** Status session EXITED
-                            */
-                            if (session.status === "EXITED") {
-                                return {
-                                    status: 200,
-                                    data: {
-                                        session: {
-                                            status: "EXITED"
-                                        },
-                                        domain: session.domain
-                                    }
-                                }
-                            }
-
-                            /*
-                            *** Status session ERROR
-                            */
-                            if (session.status === "ERROR") {
-                                return {
-                                    status: 200,
-                                    data: {
-                                        session: { status: "ERROR" }
-                                    }
-                                }
-                            }
-
-
-                            return Answers.notFound('Payment error get status');
 
                         } else {
 
                             /*
                             *** Status session PROCESS
                             */
+
                             if (session.status === "PROCESS") {
                                 return {
                                     status: 200,
@@ -271,6 +301,8 @@ export class SessionController {
                                     }
                                 }
                             }
+
+                            return Answers.notFound('error checking status');
 
                         }
 

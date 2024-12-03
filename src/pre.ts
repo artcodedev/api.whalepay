@@ -13,34 +13,34 @@ import { password } from "bun";
 
 
 
-import { Prisma } from "../src/Utils/Prisma";
+// import { Prisma } from "../src/Utils/Prisma";
 
 
 
-(async () => {
+// (async () => {
 
 
-  const backs = await Prisma.client.banks.findMany();
+//   const backs = await Prisma.client.banks.findMany();
 
-  console.log(backs)
+//   console.log(backs)
 
-  const banks = await Prisma.client.banks.createMany({
-    data: [
-      {
-        title: "SBER BANK",
-        status: true,
-        uid: "111"
-      },
-      {
-        title: "ALFA BANK",
-        status: true,
-        uid: "222"
-      }
-    ]
-  });
+//   const banks = await Prisma.client.banks.createMany({
+//     data: [
+//       {
+//         title: "SBER BANK",
+//         status: true,
+//         uid: "111"
+//       }, 
+//       {
+//         title: "ALFA BANK",
+//         status: true,
+//         uid: "222"
+//       }
+//     ]
+//   });
 
 
-})()
+// })()
 
 
 
