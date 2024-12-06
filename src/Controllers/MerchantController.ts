@@ -2,12 +2,11 @@
 
 import { Merchant, Session } from "@prisma/client";
 import bcrypt from "bcrypt";
-// import { v4 as uuidv4 } from "uuid";
 import { fromString } from 'uuidv4'
 import { Prisma } from "../Utils/Prisma";
 import jsonwebtoken from "jsonwebtoken";
 import { Answers } from "../Utils/Answers";
-import {SecretKey} from '../Secure/SeckretKey'
+import { SecretKey } from '../Secure/SeckretKey'
 
 
 /*

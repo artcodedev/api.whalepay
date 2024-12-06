@@ -1,6 +1,6 @@
 
 
-import { Currency, Status, PaymentType} from "@prisma/client"
+import { Currency, Status } from "@prisma/client"
 
 export interface InitSessionData {
     merchant_uid: string
@@ -47,12 +47,16 @@ interface VarifySessionResponseSession {
 interface VarifySessionResponsePaymentCardDetails {
     card_reciever: string
     card_number: string
+    card_valid_thru: string
 }
 
 interface VarifySessionResponsePayment {
     payment_type: string
     card_details?: VarifySessionResponsePaymentCardDetails
     payment_id?: number
+    timeout?: number,
+    amount?: number,
+    currency_symbol?: string
 }
 
 interface VarifySessionResponseData {

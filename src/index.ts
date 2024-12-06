@@ -43,10 +43,12 @@ app.post('/api/payment/init', async ({body}: {body: InitPaymentData}) => await P
 
 app.post('/api/payment/getcard', async ({body}: {body: GetCard}) => await PaymentController.getCard(body));
 
+app.post('/api/payment/checkpay', async ({body}: {body: {session_uid: string}}) => await PaymentController.checkPay(body))
+
 /*
 *** Get all active banks
 */
-app.post('/api/banks', async () => await BacksController.banks());
+app.post('/api/banks', async ({body}: {body: {session_uid: string}}) => await BacksController.banks(body));
 
 /*
 *** Session create | verify

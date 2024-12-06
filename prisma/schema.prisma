@@ -15,6 +15,7 @@ datasource db {
 
 enum Currency {
   RUB
+  USD
 }
 
 enum Status {
@@ -24,11 +25,6 @@ enum Status {
   SUCCESS
   ERROR
   EXITED
-}
-
-enum PaymentType {
-  sberbank
-  alfabank
 }
 
 enum WithdrawStatus {
@@ -49,7 +45,7 @@ model Merchant {
   email      String
   secret_key String
   sessions   Session[]
-  Withdraws  Withdraw[] 
+  Withdraws  Withdraw[]
   created_at String
   status     Boolean
 }
@@ -88,6 +84,8 @@ model Payment {
   created_at       String
   trx              String?
   bank_uid         String
+  currency_symbol  String
+  amount           Float
 }
 
 model Card {
@@ -123,8 +121,10 @@ model Withdraw {
 }
 
 model Banks {
-  id          Int         @id @default(autoincrement())
-  title       String
-  status      Boolean
-  uid         String      @unique
+  id             Int      @id @default(autoincrement())
+  title          String
+  status         Boolean
+  uid            String   @unique
+  currency       Currency
+  currencySymbol String
 }

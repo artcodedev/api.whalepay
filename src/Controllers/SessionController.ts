@@ -133,7 +133,7 @@ export class SessionController {
 
                 const session: Session | null = await Prisma.client.session.findUnique({ where: { uid: session_uid } });
 
-                // console.log(session)
+                console.log(session)
 
                 if (session) {
 
@@ -145,7 +145,7 @@ export class SessionController {
 
                         const payment: Payment | null = await Prisma.client.payment.findUnique({ where: { session_uid: session.uid } })
 
-                        console.log(payment)
+                        // console.log(payment)
 
                         if (payment) {
 
@@ -163,9 +163,9 @@ export class SessionController {
                                     }
                                 }
 
-                                return Answers.notFound('error checking status');
+                                return Answers.notFound('error checking status (PENDING_CARD)');
 
-                                
+
                             } else {
 
 
@@ -176,23 +176,25 @@ export class SessionController {
                                     */
                                     if (session.status === "PENDING_PAY") {
 
-                                        if (Date.now() >= Number(payment.created_at) + 840000) {
+                                        // if (Date.now() >= Number(payment.created_at) + 840000) {
+                                        if (false) {
 
-                                            await Prisma.client.payment.update({
-                                                where: { session_uid: session.uid },
-                                                data: { time_closed: Date.now().toString(), }
-                                            })
-                                            await Prisma.client.session.update({
-                                                where: { uid: session.uid },
-                                                data: { status: session.status, paid: false }
-                                            })
 
-                                            await Prisma.client.card.update({
-                                                where: { id: payment.card_id },
-                                                data: { busy: false }
-                                            })
+                                            // await Prisma.client.payment.update({
+                                            //     where: { session_uid: session.uid },
+                                            //     data: { time_closed: Date.now().toString(), }
+                                            // })
+                                            // await Prisma.client.session.update({
+                                            //     where: { uid: session.uid },
+                                            //     data: { status: session.status, paid: false }
+                                            // })
 
-                                            return { status: 200, data: { session: { status: session.status } } }
+                                            // await Prisma.client.card.update({
+                                            //     where: { id: payment.card_id },
+                                            //     data: { busy: false }
+                                            // })
+
+                                            // return { status: 200, data: { session: { status: session.status } } }
 
 
 
@@ -212,11 +214,16 @@ export class SessionController {
                                                             timeout: Number(payment.created_at) + 840000 - Date.now()
                                                         },
                                                         payment: {
+
                                                             payment_type: payment.bank_uid,
                                                             card_details: {
                                                                 card_reciever: card.card_receiver,
-                                                                card_number: card.card_number
-                                                            }
+                                                                card_number: card.card_number,
+                                                                card_valid_thru: card.card_valid_thru
+                                                            },
+                                                            timeout: Number(payment.created_at),
+                                                            amount: session.amount,
+                                                            currency_symbol: payment.currency_symbol
                                                         },
                                                         domain: session.domain
                                                     }
@@ -308,6 +315,8 @@ export class SessionController {
                                     }
                                 }
                             }
+
+                            console.log(session)
 
                             return Answers.notFound('error checking status');
 
