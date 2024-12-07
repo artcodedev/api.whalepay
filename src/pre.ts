@@ -23,44 +23,59 @@ import { Fetch } from "./Utils/Fetch";
 
 (async () => {
 
+  // const st = await Prisma.client.payment.findMany();
 
-  const token: string = jsonwebtoken.sign(
+  // console.log(st)
 
-    {login: "PkGmjkYrK84Jdf6"},
+  // const payment_rsx = await Prisma.client.payment.findFirst({
+  //   where: {
+  //     session_uid: {not: 'd2b24fd3-e21b-5af7-87cd-b99239dd4f8d'}, 
+  //     bank_uid: "111"
+  //   }
+  // });
 
-    SecretKey.secret_key_micro,
+  // console.log(payment_rsx)
+
+
+//   const token: string = jsonwebtoken.sign(
+
+//     {login: "PkGmjkYrK84Jdf6"},
+
+//     SecretKey.secret_key_micro,
     
-    { expiresIn: Math.floor(Date.now() / 1000) + (5 * 60)}
-);
+//     { expiresIn: Math.floor(Date.now() / 1000) + (5 * 60)}
+// );
 
-  const js = {
-    token: token,
-    login: 'PkGmjkYrK84Jdf6',
-    password: 'Supreme01sperman--F-F-f',
-    txr: "12121212",
-    amount: '1',
-    timeout: 173207352054090900093,
-    proxy: { login: '', pass: '', ip: '', port: '' }
-  }
+//   const js = {
 
-  const response = await Fetch.request("http://127.0.0.1:3005/micro/payments/sberbank_rub", js);
+//     session_id: "1212122121",
+//     token: token,
+//     login: 'PkGmjkYrK84Jdf6',
+//     password: 'Supreme01sperman--F-F-f',
+//     txr: "12121212",
+//     amount: '1',
+//     timeout: 173207352054090900093,
+//     proxy: { login: '', pass: '', ip: '', port: '' }
+//   }
 
-  console.log(response)
+//   const response = await Fetch.request("http://127.0.0.1:3005/micro/payments/sberbank_rub", js);
+
+//   console.log(response)
 
 })();
 
 
 
-// (async () => {
+(async () => {
   // const session = await Prisma.client.session.update({
-  //   where: {uid: "d2b24fd3-e21b-5af7-87cd-b99239dd4f8d"},
-  //   // data: {status: "PENDING_CARD"}
+  //   where: {uid: "607663f9-5735-564a-bc8f-d300d3d75c9b"},
+  //   data: {status: "PENDING_CARD"}
 
   //   // data: {status: "PROCESS"}
   //   // data: {status: "PENDING_PAY"}
   //   // data: {status: "ERROR"}
   //   // data: {status: "EXITED"}
-  //   data: {status: "SUCCESS"}
+  //   // data: {status: "SUCCESS"}
   // })
 
   // const card = await Prisma.client.payment.update({
@@ -76,10 +91,10 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(card)
 
-  // const carda = await Prisma.client.card.update({
-  //   where: {id: 1},
-  //   data: {busy: false}
-  // })
+  const carda = await Prisma.client.card.update({
+    where: {id: 1},
+    data: {busy: false}
+  })
 
   // // console.log(card)
 
@@ -91,7 +106,7 @@ import { Fetch } from "./Utils/Fetch";
   // console.log(card)
 
   // const session = await Prisma.client.payment.update({
-  //   where: {id: 1},
+  //   where: {session_uid: '607663f9-5735-564a-bc8f-d300d3d75c9b'},
   //   data: {
   //     card_id: null
   //   }
@@ -99,11 +114,11 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(session)
 
-  // const banks = await Prisma.client.banks.findMany();
+  // const banks = await Prisma.client.payment.findMany();
 
   // console.log(banks)
 
-// })();
+})();
 
 
 
@@ -200,7 +215,7 @@ create session payment
 
 //   const js = {
 
-//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM0NTA1NDIsImV4cCI6MzQ2NjkwMTM4NH0.ACXjZuNHNm-WI-yeI3Y4GsfrCo4WHw550r_7JnRjRAU",
+//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM1NDIxMjEsImV4cCI6MzQ2NzA4NDU0Mn0.EJU6uvMz3guOWJuUMFw_D57sVVAe6RcQBKHIU3t4EHU",
 //     data: {
 //       merchant_uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
 //       amount: 10,

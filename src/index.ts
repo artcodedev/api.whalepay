@@ -7,7 +7,6 @@ import { InitPaymentData, GetCard} from './/Models/PaymentControllerModels';
 import { InitSessionFetchRequestData } from './Models/SessionControllerModels';
 import { Auth, Signup, MerchantByUID, InitSessionDataRequest } from "./Models/MerchantControllerModels";
 
-
 /*
 *** Controllers
 */
@@ -18,7 +17,6 @@ import { PaymentController } from '../src/Controllers/PaymentController'
 
 
 const app = new Elysia()
-
 
 /*
 *** index page
@@ -55,7 +53,7 @@ app.post('/api/banks', async ({body}: {body: {session_uid: string}}) => await Ba
 */
 app.post('/api/session/create', async ({body}: {body: InitSessionDataRequest}) => await SessionController.CreateSession(body));
 
-app.post('/api/session/verify', async ({body} : {body: InitSessionFetchRequestData}) => await SessionController.VarifySession(body));
+app.post('/api/session/verify', async ({body} : {body: InitSessionFetchRequestData}) => await SessionController.VerifySession(body));
 
 /*
 *** Start app listen port 

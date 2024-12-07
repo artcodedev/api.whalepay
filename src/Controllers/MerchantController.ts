@@ -6,7 +6,8 @@ import { fromString } from 'uuidv4'
 import { Prisma } from "../Utils/Prisma";
 import jsonwebtoken from "jsonwebtoken";
 import { Answers } from "../Utils/Answers";
-import { SecretKey } from '../Secure/SeckretKey'
+import { SecretKey } from '../Secure/SeckretKey';
+import { Token } from "../Utils/Token";
 
 
 /*
@@ -37,14 +38,16 @@ export class MerchantController {
 
                         const time_live: number = session ? 600 : 5
 
-                        const token: string = jsonwebtoken.sign(
+                        const token: string = await Token.sign({uid: merchant.uid}, SecretKey.secret_key, Math.floor(Date.now() / 1000) + (time_live * 60));
 
-                            {uid: merchant.uid},
+                        // const token: string = jsonwebtoken.sign(
 
-                            SecretKey.secret_key,
+                        //     {uid: merchant.uid},
+
+                        //     SecretKey.secret_key,
                             
-                            { expiresIn: Math.floor(Date.now() / 1000) + (time_live * 60)}
-                        );
+                        //     { expiresIn: Math.floor(Date.now() / 1000) + (time_live * 60)}
+                        // );
 
                         return { status: 200, token: token };
                     }

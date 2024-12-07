@@ -25,6 +25,7 @@ enum Status {
   SUCCESS
   ERROR
   EXITED
+  REQVER
 }
 
 enum WithdrawStatus {

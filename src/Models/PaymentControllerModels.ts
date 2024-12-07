@@ -33,3 +33,21 @@ export interface InitResponse {
 export interface GetCard {
     session_uid: string
 }
+
+export interface Proxy {
+    login: string
+    password: string
+    ip: string
+    port: string
+}
+
+export interface ObjectMicroSberRUB {
+    session_uid: string
+    token: string
+    login: string
+    password: string
+    txr: string
+    amount: number
+    timeout: number
+    proxy: Proxy
+}

@@ -9,6 +9,7 @@ import jsonwebtoken, { JwtPayload } from "jsonwebtoken";
 import { SecretKey } from '../Secure/SeckretKey';
 import { InitSessionDataRequest } from "../Models/MerchantControllerModels";
 import { fromString } from 'uuidv4'
+import { Token } from "../Utils/Token";
 
 
 
@@ -24,18 +25,18 @@ export class SessionController {
     /*
     *** Check varify token
     */
-    private static async VarifyToket(token: string): Promise<boolean> {
+    // private static async VarifyToket(token: string): Promise<boolean> {
 
-        try {
-            const varify: string | JwtPayload = jsonwebtoken.verify(token, SecretKey.secret_key);
-            return varify ? true : false;
+    //     try {
+    //         const varify: string | JwtPayload = jsonwebtoken.verify(token, SecretKey.secret_key);
+    //         return varify ? true : false;
 
-        } catch (e) {
-            Logger.write(process.env.ERROR_LOGS, e);
-            return false
-        }
+    //     } catch (e) {
+    //         Logger.write(process.env.ERROR_LOGS, e);
+    //         return false
+    //     }
 
-    }
+    // }
 
     /*
     *** Create new session
@@ -46,9 +47,11 @@ export class SessionController {
 
             if (token && data) {
 
-                const varifyToken: boolean = await SessionController.VarifyToket(token);
+                // const varifyToken: boolean = await SessionController.VarifyToket(token);
 
-                if (varifyToken) {
+                const verifyToken: boolean = await Token.verify(token, SecretKey.secret_key)
+
+                if (verifyToken) {
 
                     const activeBanks: Banks[] | null = await Prisma.client.banks.findMany({ where: { status: true } });
 
@@ -125,7 +128,7 @@ export class SessionController {
     /*
     *** Varify Session
     */
-    public static async VarifySession({ session_uid }: InitSessionFetchRequestData): Promise<AnswersError | VarifySessionResponse> {
+    public static async VerifySession({ session_uid }: InitSessionFetchRequestData): Promise<AnswersError | VarifySessionResponse> {
 
         try {
 
@@ -315,8 +318,6 @@ export class SessionController {
                                     }
                                 }
                             }
-
-                            console.log(session)
 
                             return Answers.notFound('error checking status');
 

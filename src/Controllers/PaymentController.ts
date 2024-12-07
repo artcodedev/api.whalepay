@@ -7,17 +7,20 @@
 import { Logger } from "../Utils/Logger";
 import { Answers } from "../Utils/Answers";
 import { Fetch } from '../Utils/Fetch';
+import { Token } from "../Utils/Token";
+// import jsonwebtoken from "jsonwebtoken";
 
 /*
 *** Models
 */
-import { InitPaymentData, InitResponse, GetCard } from '../Models/PaymentControllerModels';
+import { InitPaymentData, InitResponse, GetCard, ObjectMicroSberRUB, Proxy } from '../Models/PaymentControllerModels';
 import { Session, Payment, Card, Banks } from "@prisma/client";
 
 /*
 *** Prisma client
 */
 import { Prisma } from "../Utils/Prisma";
+import { SecretKey } from "../Secure/SeckretKey";
 
 
 export class PaymentController {
@@ -27,13 +30,10 @@ export class PaymentController {
     */
     private static async sendHttpToMicroservice(payment: Payment): Promise<number> {
 
-
         try {
 
-            // const request: {status: number} = await Fetch.request(`${process.env.MICROSERVICE}`);
-
             const bank: Banks | null = await Prisma.client.banks.findUnique({
-                where: {uid: payment.bank_uid}
+                where: { uid: payment.bank_uid }
             })
 
             if (bank) {
@@ -42,20 +42,60 @@ export class PaymentController {
                 *** SBER BANK (RUB)
                 */
                 if (bank.uid === '111') {
+
+                    if (payment.card_id) {
+
+                        const card: Card | null = await Prisma.client.card.findUnique({
+                            where: { id: payment.card_id }
+                        })
+
+                        if (card) {
+
+                            /* GET PROXY */
+
+                            const proxy: Proxy = { login: '', password: '', ip: '', port: '' }
+
+                            const token: string = await Token.sign({ uid: payment.session_uid }, SecretKey.secret_key_micro, Math.floor(Date.now() / 1000) + (5 * 60));
+
+                            const payment_txr: Payment | null = await Prisma.client.payment.findFirst({
+                                where: {
+                                    session_uid: { not: payment.session_uid },
+                                    card_id: payment.card_id,
+                                    bank_uid: payment.bank_uid
+                                }
+                            })
+
+                            const objectMicroSberRUB: ObjectMicroSberRUB = {
+                                session_uid: payment.session_uid,
+                                token: token,
+                                login: card.card_login,
+                                password: card.card_password,
+                                txr: payment_txr ? payment_txr.trx ? payment_txr.trx : '' : '',
+                                amount: payment.amount,
+                                timeout: Number(payment.created_at),
+                                proxy: proxy
+                            }
+
+                            const request: { status: number } = await Fetch.request('http://127.0.0.1:3005/micro/payments/sberbank_rub', objectMicroSberRUB);
+
+                            return request.status
+
+                        }
+                    }
+
                 }
 
                 /*
                 *** ALFA BANK (USD)
                 */
-                if (bank.uid === '3') {
+                if (bank.uid === '333') {
                 }
             }
 
-
-
             return 500
+
         }
-        catch(e) {
+        catch (e) {
             Logger.write(process.env.ERROR_LOGS, e);
             return 500
         }
@@ -180,9 +220,16 @@ export class PaymentController {
 
                             */
 
-                            return {
-                                status: 200
+                            const microservice: number = await PaymentController.sendHttpToMicroservice(craete_payment);
+
+                            if (microservice == 500) {
+                                await Prisma.client.session.update({
+                                    where: { uid: init.session_uid },
+                                    data: { status: "ERROR" },
+                                });
                             }
+
+                            return { status: microservice }
 
                         }
                     }
@@ -248,8 +295,16 @@ export class PaymentController {
 
                                 */
 
+                                const microservice: number = await PaymentController.sendHttpToMicroservice(updatePayment);
 
-                                return {
+                                if (microservice == 500) {
+                                    await Prisma.client.session.update({
+                                        where: { uid: updateSession.uid },
+                                        data: { status: "ERROR" },
+                                    });
+                                }
+
+                                return microservice == 200 ? {
                                     status: 200,
                                     card_details: {
                                         card_number: card.card_number,
@@ -259,7 +314,22 @@ export class PaymentController {
                                     timeout: Number(updatePayment.created_at),
                                     amount: updateSession.amount,
                                     currency_symbol: updatePayment.currency_symbol
-                                }
+                                } : {status: 500}
+
+                                // return { status: microservice }
+
+
+                                // return {
+                                //     status: 200,
+                                //     card_details: {
+                                //         card_number: card.card_number,
+                                //         card_receiver: card.card_receiver,
+                                //         card_valid_thru: card.card_valid_thru
+                                //     },
+                                //     timeout: Number(updatePayment.created_at),
+                                //     amount: updateSession.amount,
+                                //     currency_symbol: updatePayment.currency_symbol
+                                // }
                             }
 
                             return Answers.wrong("can not update payment")
@@ -318,16 +388,16 @@ export class PaymentController {
     /*
     *** Check session status
     */
-    public static async checkPay({session_uid} : {session_uid: string}): Promise<{status: string} | Answers> {
+    public static async checkPay({ session_uid }: { session_uid: string }): Promise<{ status: string } | Answers> {
 
         try {
 
             const session: Session | null = await Prisma.client.session.findUnique({
-                where: {uid: session_uid}
-            }); 
+                where: { uid: session_uid }
+            });
 
 
-            return session ? {status: session.status} : Answers.notFound("session not found")
+            return session ? { status: session.status } : Answers.notFound("session not found")
         }
         catch (e) {
             Logger.write(process.env.ERROR_LOGS, e);
