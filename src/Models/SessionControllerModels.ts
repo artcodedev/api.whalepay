@@ -20,7 +20,7 @@ export interface InitSessionDataResponseData {
     currency: Currency,
     paid: boolean,
     amount: number,
-    created_at: string,
+    created_at: number,
     description: string,
     metadata: any,
     domain: string,

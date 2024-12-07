@@ -23,16 +23,20 @@ import { Fetch } from "./Utils/Fetch";
 
 (async () => {
 
+
   // const st = await Prisma.client.payment.findMany();
 
   // console.log(st)
 
-  // const payment_rsx = await Prisma.client.payment.findFirst({
-  //   where: {
-  //     session_uid: {not: 'd2b24fd3-e21b-5af7-87cd-b99239dd4f8d'}, 
-  //     bank_uid: "111"
-  //   }
-  // });
+  const payment_rsx = await Prisma.client.payment.update({
+    where: {
+      session_uid: "f5c09d41-72eb-5e06-beca-430e6a225072", 
+      bank_uid: "111"
+    },
+    data: {
+      created_at: Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})) + 15000
+    }
+  });
 
   // console.log(payment_rsx)
 
@@ -67,11 +71,16 @@ import { Fetch } from "./Utils/Fetch";
 
 
 (async () => {
+
+  // console.log(Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})))
+
+  // const javaScriptRelease = Date.parse('04 Dec 1995 00:12:00 GMT');
+
   // const session = await Prisma.client.session.update({
   //   where: {uid: "607663f9-5735-564a-bc8f-d300d3d75c9b"},
-  //   data: {status: "PENDING_CARD"}
+  //   // data: {status: "PENDING_CARD"}
 
-  //   // data: {status: "PROCESS"}
+  //   data: {status: "PROCESS"}
   //   // data: {status: "PENDING_PAY"}
   //   // data: {status: "ERROR"}
   //   // data: {status: "EXITED"}
@@ -91,10 +100,10 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(card)
 
-  const carda = await Prisma.client.card.update({
-    where: {id: 1},
-    data: {busy: false}
-  })
+  // const carda = await Prisma.client.card.update({
+  //   where: {id: 1},
+  //   data: {busy: false}
+  // })
 
   // // console.log(card)
 
@@ -114,7 +123,7 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(session)
 
-  // const banks = await Prisma.client.payment.findMany();
+  // const banks = await Prisma.client.card.findMany();
 
   // console.log(banks)
 
@@ -150,10 +159,10 @@ import { Fetch } from "./Utils/Fetch";
 
 // (async () => {
 
-// //   const updateSesson: Session = await Prisma.client.session.update({
-// //     where: { uid: "0282cc9f-f971-52a9-9fa0-d7d76297e3b0" },
-// //     data: { status: "PROCESS" },
-// // });
+//   const updateSesson: Session = await Prisma.client.session.update({
+//     where: { uid: "0282cc9f-f971-52a9-9fa0-d7d76297e3b0" },
+//     data: { status: "PROCESS" },
+// });
 
 
 // // const tr = await Prisma.client.payment.delete({
@@ -168,31 +177,33 @@ import { Fetch } from "./Utils/Fetch";
 
 //   // const session = await Prisma.client.payment.findMany();
 
-//   // const banks = await Prisma.client.banks.createMany({
-//   //   data: [
-//   //     {
-//   //       title: "SBER BANK",
-//   //       status: true,
-//   //       uid: "111",
-//   //       currency: "RUB",
-//   //       currencySymbol: "₽"
-//   //     }, 
-//   //     {
-//   //       title: "ALFA BANK",
-//   //       status: true,
-//   //       uid: "222",
-//   //       currency: "RUB",
-//   //       currencySymbol: "₽"
-//   //     },
-//   //     {
-//   //       title: "ALFA BANK USD",
-//   //       status: true,
-//   //       uid: "333",
-//   //       currency: "USD",
-//   //       currencySymbol: "$"
-//   //     }
-//   //   ]
-//   // });
+  // const banks = await Prisma.client.banks.createMany({
+  //   data: [
+  //     {
+  //       title: "SBER BANK",
+  //       status: true,
+  //       uid: "111",
+  //       currency: "RUB",
+  //       currencySymbol: "₽"
+  //     }, 
+  //     {
+  //       title: "ALFA BANK",
+  //       status: true,
+  //       uid: "222",
+  //       currency: "RUB",
+  //       currencySymbol: "₽"
+  //     },
+  //     {
+  //       title: "ALFA BANK USD",
+  //       status: true,
+  //       uid: "333",
+  //       currency: "USD",
+  //       currencySymbol: "$"
+  //     }
+  //   ]
+  // });
+
+  // console.log(banks)
 
 //   const banks = await Prisma.client.banks.findMany();
 //   console.log(banks)
@@ -215,7 +226,7 @@ create session payment
 
 //   const js = {
 
-//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM1NDIxMjEsImV4cCI6MzQ2NzA4NDU0Mn0.EJU6uvMz3guOWJuUMFw_D57sVVAe6RcQBKHIU3t4EHU",
+//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM1NTE4OTUsImV4cCI6MzQ2NzEwNDA5MH0.At5bRROCvAYe6OVcVlIna5M4B6dC9YmqIrEoosLHmy4",
 //     data: {
 //       merchant_uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
 //       amount: 10,

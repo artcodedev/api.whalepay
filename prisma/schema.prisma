@@ -47,25 +47,26 @@ model Merchant {
   secret_key String
   sessions   Session[]
   Withdraws  Withdraw[]
-  created_at String
+  created_at BigInt
   status     Boolean
 }
 
 model Session {
-  id          Int       @id @default(autoincrement())
-  uid         String    @unique
-  merchant    Merchant  @relation(fields: [merchant_id], references: [id])
-  merchant_id Int
-  amount      Float
-  currency    Currency
-  status      Status
-  description String
-  paid        Boolean
-  domain      String
-  callback    String
-  metadata    Json
-  payment     Payment[]
-  created_at  String
+  id           Int       @id @default(autoincrement())
+  uid          String    @unique
+  merchant     Merchant  @relation(fields: [merchant_id], references: [id])
+  merchant_id  Int
+  amount       Float
+  currency     Currency
+  status       Status
+  description  String
+  paid         Boolean
+  domain       String
+  callback     String
+  metadata     Json
+  payment      Payment[]
+  created_at   BigInt
+  status_error String?
 }
 
 model Payment {
@@ -82,7 +83,7 @@ model Payment {
   time_paid        String?
   from             String?
   card_id          Int?
-  created_at       String
+  created_at       BigInt
   trx              String?
   bank_uid         String
   currency_symbol  String
@@ -117,7 +118,7 @@ model Withdraw {
   amount               Int
   status               WithdrawStatus
   message              String?
-  created_at           String
+  created_at           BigInt
   updated_at           String?
 }
 

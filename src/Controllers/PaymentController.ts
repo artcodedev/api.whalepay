@@ -62,6 +62,7 @@ export class PaymentController {
                                     session_uid: { not: payment.session_uid },
                                     card_id: payment.card_id,
                                     bank_uid: payment.bank_uid
+                                    
                                 }
                             })
 
@@ -76,9 +77,11 @@ export class PaymentController {
                                 proxy: proxy
                             }
 
-                            const request: { status: number } = await Fetch.request('http://127.0.0.1:3005/micro/payments/sberbank_rub', objectMicroSberRUB);
+                            // const request: { status: number } = await Fetch.request('http://127.0.0.1:3005/micro/payments/sberbank_rub', objectMicroSberRUB);
 
-                            return request.status
+                            // return request.status
+
+                            return 200
 
                         }
                     }
@@ -146,6 +149,8 @@ export class PaymentController {
 
             if (banks) {
 
+                const create_at: number = Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})) + 900000;
+
                 const payment: Payment = await Prisma.client.payment.create({
                     data: {
                         time_opened: init.time_opened,
@@ -156,7 +161,7 @@ export class PaymentController {
                         email: init.email,
                         session_uid: init.session_uid,
                         card_id,
-                        created_at: Date.now().toString(),
+                        created_at: create_at,
                         bank_uid: init.bank_uid,
                         currency_symbol: banks.currencySymbol,
                         amount: amount
@@ -278,9 +283,11 @@ export class PaymentController {
 
                         if (updateSession) {
 
+                            const create_at: number = Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})) + 900000;
+
                             const updatePayment: Payment = await Prisma.client.payment.update({
                                 where: { session_uid: payment.session_uid },
-                                data: { card_id: card.id, created_at: Date.now().toString() }
+                                data: { card_id: card.id, created_at: create_at }
                             })
 
                             if (updateSession) {
@@ -316,20 +323,6 @@ export class PaymentController {
                                     currency_symbol: updatePayment.currency_symbol
                                 } : {status: 500}
 
-                                // return { status: microservice }
-
-
-                                // return {
-                                //     status: 200,
-                                //     card_details: {
-                                //         card_number: card.card_number,
-                                //         card_receiver: card.card_receiver,
-                                //         card_valid_thru: card.card_valid_thru
-                                //     },
-                                //     timeout: Number(updatePayment.created_at),
-                                //     amount: updateSession.amount,
-                                //     currency_symbol: updatePayment.currency_symbol
-                                // }
                             }
 
                             return Answers.wrong("can not update payment")

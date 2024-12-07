@@ -97,7 +97,7 @@ export class MerchantController {
                             uid: uid,
                             secret_key: key,
                             password: pass_sha,
-                            created_at: Date.now().toString(),
+                            created_at: Number(Date.now().toString()),
                             status: true
                         },
                     });

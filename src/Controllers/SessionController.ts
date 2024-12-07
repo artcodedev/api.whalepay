@@ -66,6 +66,8 @@ export class SessionController {
 
                             const uid: string = fromString(uidst);
 
+                            const create_at: number = Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}));
+
                             const session = await Prisma.client.session.create({
                                 data: {
                                     uid: uid,
@@ -76,7 +78,7 @@ export class SessionController {
                                     domain: data.domain,
                                     callback: data.callback,
                                     metadata: data.metadata,
-                                    created_at: Date.now().toString(),
+                                    created_at: create_at,
                                     status: Status.PROCESS,
                                     paid: false
                                 }
@@ -91,7 +93,7 @@ export class SessionController {
                                         currency: session.currency,
                                         paid: false,
                                         amount: session.amount,
-                                        created_at: session.created_at,
+                                        created_at: Number(session.created_at),
                                         description: session.description,
                                         metadata: session.metadata,
                                         domain: session.domain,
@@ -214,7 +216,6 @@ export class SessionController {
                                                             status: session.status,
                                                             currency: session.currency,
                                                             amount: session.amount,
-                                                            timeout: Number(payment.created_at) + 840000 - Date.now()
                                                         },
                                                         payment: {
 
