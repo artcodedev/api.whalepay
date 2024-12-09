@@ -5,6 +5,7 @@ import { SecretKey } from '../src/Secure/SeckretKey'
 
 import { fromString } from 'uuidv4'
 import { password } from "bun";
+import { Token } from "./Utils/Token";
 
 
 
@@ -28,17 +29,31 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(st)
 
-  const payment_rsx = await Prisma.client.payment.update({
-    where: {
-      session_uid: "f5c09d41-72eb-5e06-beca-430e6a225072", 
-      bank_uid: "111"
-    },
-    data: {
-      created_at: Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})) + 15000
-    }
-  });
+  const token: string = await Token.sign({session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1"}, SecretKey.secret_key_micro, 10000000000);
 
-  // console.log(payment_rsx)
+  const data: any = {
+    status: 'EXITED',
+    error: "",
+    trx:'',
+    session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1",
+    token: token,
+    amount: 10,
+    enrollment_time: Date.parse(new Date().toLocaleString("en-US", { timeZone: "Europe/Moscow" }))
+  }
+
+
+  // const fetch = await Fetch.request('http://localhost:5000/api/micro/sberbankrub', data);
+
+  //   const session = await Prisma.client.session.findFirst({
+  //   where: {uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1"},
+  // })
+  // console.log(session);
+
+ 
+  // const session = await Prisma.client.session.update({
+  //   where: {uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1"},
+  //   data: {status: "PENDING_PAY", paid: false, created_at: Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})) + 900000}
+  // })
 
 
 //   const token: string = jsonwebtoken.sign(
@@ -157,7 +172,11 @@ import { Fetch } from "./Utils/Fetch";
 //   console.log(rt)
 // })();
 
-// (async () => {
+
+
+
+
+(async () => {
 
 //   const updateSesson: Session = await Prisma.client.session.update({
 //     where: { uid: "0282cc9f-f971-52a9-9fa0-d7d76297e3b0" },
@@ -165,17 +184,17 @@ import { Fetch } from "./Utils/Fetch";
 // });
 
 
-// // const tr = await Prisma.client.payment.delete({
-// //   where: {session_uid: "f7fb7208-2180-57e4-9dec-2466bd29a9c9"}
-// // });
+// const tr = await Prisma.client.payment.delete({
+//   where: {session_uid: "f7fb7208-2180-57e4-9dec-2466bd29a9c9"}
+// });
 
-// // console.log(tr)
+// console.log(tr)
 
-// // const ses = await Prisma.client.session.update({
-// //   where: {}
-// // })
+// const ses = await Prisma.client.session.update({
+//   where: {}
+// })
 
-//   // const session = await Prisma.client.payment.findMany();
+  // const session = await Prisma.client.payment.findMany();
 
   // const banks = await Prisma.client.banks.createMany({
   //   data: [
@@ -205,11 +224,11 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(banks)
 
-//   const banks = await Prisma.client.banks.findMany();
-//   console.log(banks)
+  // const banks = await Prisma.client.banks.findMany();
+  // console.log(banks)
 
 
-// })()
+})()
 
 
 
@@ -226,7 +245,7 @@ create session payment
 
 //   const js = {
 
-//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM1NTE4OTUsImV4cCI6MzQ2NzEwNDA5MH0.At5bRROCvAYe6OVcVlIna5M4B6dC9YmqIrEoosLHmy4",
+//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM3Mzc3MTcsImV4cCI6MzQ2NzQ3NTczNH0.P4V0H0RTmguc9iO_Bii5vWEShanbhXW2lvYvt6nrzAI",
 //     data: {
 //       merchant_uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
 //       amount: 10,

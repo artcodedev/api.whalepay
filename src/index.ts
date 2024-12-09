@@ -6,14 +6,16 @@ import { Elysia } from "elysia";
 import { InitPaymentData, GetCard} from './/Models/PaymentControllerModels';
 import { InitSessionFetchRequestData } from './Models/SessionControllerModels';
 import { Auth, Signup, MerchantByUID, InitSessionDataRequest } from "./Models/MerchantControllerModels";
+import { Callback, ResponseSberBankRUB, SberBankRubBody } from "../src/Models/MicroControllerModels";
 
 /*
 *** Controllers
 */
 import { BacksController } from "./Controllers/BanksController";
-import {SessionController} from '../src/Controllers/SessionController'
+import {SessionController} from '../src/Controllers/SessionController';
 import {MerchantController} from '../src/Controllers/MerchantController';
-import { PaymentController } from '../src/Controllers/PaymentController'
+import { PaymentController } from '../src/Controllers/PaymentController';
+import { MicroController } from '../src/Controllers/MicroController';
 
 
 const app = new Elysia()
@@ -54,6 +56,11 @@ app.post('/api/banks', async ({body}: {body: {session_uid: string}}) => await Ba
 app.post('/api/session/create', async ({body}: {body: InitSessionDataRequest}) => await SessionController.CreateSession(body));
 
 app.post('/api/session/verify', async ({body} : {body: InitSessionFetchRequestData}) => await SessionController.VerifySession(body));
+
+/*
+*** Microservice response
+*/
+app.post('/api/micro/sberbankrub', ({body}: {body: SberBankRubBody}) => MicroController.sberbankrub(body));
 
 /*
 *** Start app listen port 

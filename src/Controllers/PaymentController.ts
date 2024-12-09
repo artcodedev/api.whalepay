@@ -8,7 +8,6 @@ import { Logger } from "../Utils/Logger";
 import { Answers } from "../Utils/Answers";
 import { Fetch } from '../Utils/Fetch';
 import { Token } from "../Utils/Token";
-// import jsonwebtoken from "jsonwebtoken";
 
 /*
 *** Models
@@ -55,13 +54,16 @@ export class PaymentController {
 
                             const proxy: Proxy = { login: '', password: '', ip: '', port: '' }
 
-                            const token: string = await Token.sign({ uid: payment.session_uid }, SecretKey.secret_key_micro, Math.floor(Date.now() / 1000) + (5 * 60));
+                            const token: string = await Token.sign({ uid: payment.session_uid }, SecretKey.secret_key_micro, Math.floor(Date.now() / 1000) + 1440);
 
                             const payment_txr: Payment | null = await Prisma.client.payment.findFirst({
+
                                 where: {
                                     session_uid: { not: payment.session_uid },
                                     card_id: payment.card_id,
-                                    bank_uid: payment.bank_uid
+                                    bank_uid: payment.bank_uid,
+                                    amount: payment.amount,
+                                    time_paid: {not: null}
                                     
                                 }
                             })

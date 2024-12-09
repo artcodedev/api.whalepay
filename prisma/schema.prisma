@@ -28,6 +28,19 @@ enum Status {
   REQVER
 }
 
+enum Errors {
+  PROXY
+  LOGIN
+  NETWORK
+  NOTFOUNDELEM
+  PARSE
+  TIMEEND
+  SESSIONERROR
+  REQVER
+  OTHER
+  NONE
+}
+
 enum WithdrawStatus {
   PENDING
   SUCCESS
@@ -66,7 +79,7 @@ model Session {
   metadata     Json
   payment      Payment[]
   created_at   BigInt
-  status_error String?
+  status_error Errors?
 }
 
 model Payment {
@@ -79,8 +92,8 @@ model Payment {
   email            String
   session          Session @relation(fields: [session_uid], references: [uid], onUpdate: NoAction)
   session_uid      String  @unique
-  time_closed      String?
-  time_paid        String?
+  time_closed      BigInt?
+  time_paid        Int?
   from             String?
   card_id          Int?
   created_at       BigInt

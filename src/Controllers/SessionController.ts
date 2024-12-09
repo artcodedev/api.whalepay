@@ -23,22 +23,6 @@ export class SessionController {
     }
 
     /*
-    *** Check varify token
-    */
-    // private static async VarifyToket(token: string): Promise<boolean> {
-
-    //     try {
-    //         const varify: string | JwtPayload = jsonwebtoken.verify(token, SecretKey.secret_key);
-    //         return varify ? true : false;
-
-    //     } catch (e) {
-    //         Logger.write(process.env.ERROR_LOGS, e);
-    //         return false
-    //     }
-
-    // }
-
-    /*
     *** Create new session
     */
     public static async CreateSession({ token, data }: InitSessionDataRequest): Promise<AnswersError | InitSessionDataResponse> {
@@ -47,15 +31,13 @@ export class SessionController {
 
             if (token && data) {
 
-                // const varifyToken: boolean = await SessionController.VarifyToket(token);
-
                 const verifyToken: boolean = await Token.verify(token, SecretKey.secret_key)
 
                 if (verifyToken) {
 
                     const activeBanks: Banks[] | null = await Prisma.client.banks.findMany({ where: { status: true } });
 
-                    if (activeBanks) {
+                    if (activeBanks.length && activeBanks) {
                         const merchant: Merchant | null = await Prisma.client.merchant.findUnique({ where: { uid: data.merchant_uid } });
 
                         if (merchant) {
@@ -80,7 +62,7 @@ export class SessionController {
                                     metadata: data.metadata,
                                     created_at: create_at,
                                     status: Status.PROCESS,
-                                    paid: false
+                                    paid: false,
                                 }
                             })
 
@@ -181,25 +163,27 @@ export class SessionController {
                                     */
                                     if (session.status === "PENDING_PAY") {
 
-                                        // if (Date.now() >= Number(payment.created_at) + 840000) {
-                                        if (false) {
+                                        const data_now: number = Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}));
 
+                                        if (data_now >= Number(payment.created_at) + 900000) {
+                                        // if (false) {
 
-                                            // await Prisma.client.payment.update({
-                                            //     where: { session_uid: session.uid },
-                                            //     data: { time_closed: Date.now().toString(), }
-                                            // })
-                                            // await Prisma.client.session.update({
-                                            //     where: { uid: session.uid },
-                                            //     data: { status: session.status, paid: false }
-                                            // })
+                                            await Prisma.client.payment.update({
+                                                where: { session_uid: session.uid },
+                                                data: { time_closed: Number(data_now), }
+                                            })
 
-                                            // await Prisma.client.card.update({
-                                            //     where: { id: payment.card_id },
-                                            //     data: { busy: false }
-                                            // })
+                                            await Prisma.client.session.update({
+                                                where: { uid: session.uid },
+                                                data: { status: session.status, paid: false }
+                                            })
 
-                                            // return { status: 200, data: { session: { status: session.status } } }
+                                            await Prisma.client.card.update({
+                                                where: { id: payment.card_id },
+                                                data: { busy: false }
+                                            })
+
+                                            return { status: 200, data: { session: { status: session.status } } }
 
 
 
@@ -225,7 +209,7 @@ export class SessionController {
                                                                 card_number: card.card_number,
                                                                 card_valid_thru: card.card_valid_thru
                                                             },
-                                                            timeout: Number(payment.created_at),
+                                                            timeout: Number(session.created_at),
                                                             amount: session.amount,
                                                             currency_symbol: payment.currency_symbol
                                                         },
