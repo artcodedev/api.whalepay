@@ -11,8 +11,6 @@ import { InitSessionDataRequest } from "../Models/MerchantControllerModels";
 import { fromString } from 'uuidv4'
 import { Token } from "../Utils/Token";
 
-
-
 export class SessionController {
 
     /*
