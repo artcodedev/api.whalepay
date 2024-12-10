@@ -3,7 +3,7 @@ import { Elysia } from "elysia";
 /*
 *** Interface models
 */
-import { InitPaymentData, GetCard} from './/Models/PaymentControllerModels';
+import { InitPaymentData, GetCard, TrxMicroservice} from './/Models/PaymentControllerModels';
 import { InitSessionFetchRequestData } from './Models/SessionControllerModels';
 import { Auth, Signup, MerchantByUID, InitSessionDataRequest } from "./Models/MerchantControllerModels";
 import { Callback, ResponseSberBankRUB, SberBankRubBody } from "../src/Models/MicroControllerModels";
@@ -45,6 +45,8 @@ app.post('/api/payment/getcard', async ({body}: {body: GetCard}) => await Paymen
 
 app.post('/api/payment/checkpay', async ({body}: {body: {session_uid: string}}) => await PaymentController.checkPay(body))
 
+app.post('/api/payment/trxmicroservice', ({body}: {body: TrxMicroservice}) => PaymentController.getTrxMicroservice(body));
+
 /*
 *** Get all active banks
 */
@@ -61,6 +63,8 @@ app.post('/api/session/verify', async ({body} : {body: InitSessionFetchRequestDa
 *** Microservice response
 */
 app.post('/api/micro/sberbankrub', ({body}: {body: SberBankRubBody}) => MicroController.sberbankrub(body));
+
+
 
 /*
 *** Start app listen port 

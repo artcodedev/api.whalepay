@@ -1,6 +1,7 @@
 
 
-import { Currency } from "@prisma/client"
+import { Currency, Errors } from "@prisma/client"
+import { StringifyOptions } from "querystring"
 
 export interface InitPaymentData {
 
@@ -46,8 +47,15 @@ export interface ObjectMicroSberRUB {
     token: string
     login: string
     password: string
-    txr: string
-    amount: number
+    trx?: string
+    amount?: number
     timeout: number
-    proxy: Proxy
+}
+
+export interface TrxMicroservice {
+    token: string
+    status: number
+    error: Errors
+    trx: string
+    session_uid: string
 }

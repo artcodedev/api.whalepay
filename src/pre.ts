@@ -29,17 +29,17 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(st)
 
-  const token: string = await Token.sign({session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1"}, SecretKey.secret_key_micro, 10000000000);
+  // const token: string = await Token.sign({session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1"}, SecretKey.secret_key_micro, 10000000000);
 
-  const data: any = {
-    status: 'EXITED',
-    error: "",
-    trx:'',
-    session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1",
-    token: token,
-    amount: 10,
-    enrollment_time: Date.parse(new Date().toLocaleString("en-US", { timeZone: "Europe/Moscow" }))
-  }
+  // const data: any = {
+  //   status: 'EXITED',
+  //   error: "",
+  //   trx:'',
+  //   session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1",
+  //   token: token,
+  //   amount: 10,
+  //   enrollment_time: Date.parse(new Date().toLocaleString("en-US", { timeZone: "Europe/Moscow" }))
+  // }
 
 
   // const fetch = await Fetch.request('http://localhost:5000/api/micro/sberbankrub', data);
@@ -87,27 +87,37 @@ import { Fetch } from "./Utils/Fetch";
 
 (async () => {
 
+
+//   const objectMicroSberRUB = {
+//     session_uid: "adsdd",
+//     token: "sdsds",
+//     login: "sdsd",
+//     password: "dsdsdsdsd",
+//     trx: "23232322",
+//     amount: "2323232323232"
+// }
+
+// const sberbank_rub_trx: string =  'sberbank_rub_trx';
+
+// const request: { status: number } = await Fetch.request(`http://127.0.0.1:3006/micro/payments/sberbank_rub_trx`, objectMicroSberRUB);
+
+// console.log(request)
+
   // console.log(Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})))
 
   // const javaScriptRelease = Date.parse('04 Dec 1995 00:12:00 GMT');
 
   // const session = await Prisma.client.session.update({
-  //   where: {uid: "607663f9-5735-564a-bc8f-d300d3d75c9b"},
-  //   // data: {status: "PENDING_CARD"}
+  //   where: {uid: "e8868fa0-d4fb-5f2d-9252-8cbde191c541"},
+  //   data: {status: "PENDING_CARD"}
 
-  //   data: {status: "PROCESS"}
+  //   // data: {status: "PROCESS"}
   //   // data: {status: "PENDING_PAY"}
   //   // data: {status: "ERROR"}
   //   // data: {status: "EXITED"}
   //   // data: {status: "SUCCESS"}
   // })
 
-  // const card = await Prisma.client.payment.update({
-  //   where: {id: 3},
-  //   data: {
-  //     card_id: null
-  //   }
-  // })
 
   // console.log(card)
 
@@ -115,10 +125,10 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(card)
 
-  // const carda = await Prisma.client.card.update({
-  //   where: {id: 1},
-  //   data: {busy: false}
-  // })
+  const carda = await Prisma.client.card.update({
+    where: {id: 1},
+    data: {busy: false}
+  })
 
   // // console.log(card)
 
@@ -126,11 +136,11 @@ import { Fetch } from "./Utils/Fetch";
   //   where: {session_uid: "d2b24fd3-e21b-5af7-87cd-b99239dd4f8d"}
   // })
 
-  // const card = await Prisma.client.card.findMany()
+  // const card = await Prisma.client.payment.findMany()
   // console.log(card)
 
   // const session = await Prisma.client.payment.update({
-  //   where: {session_uid: '607663f9-5735-564a-bc8f-d300d3d75c9b'},
+  //   where: {session_uid: 'e8868fa0-d4fb-5f2d-9252-8cbde191c541'},
   //   data: {
   //     card_id: null
   //   }
@@ -138,7 +148,7 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(session)
 
-  // const banks = await Prisma.client.card.findMany();
+  // const banks = await Prisma.client.session.findMany();
 
   // console.log(banks)
 
@@ -176,7 +186,27 @@ import { Fetch } from "./Utils/Fetch";
 
 
 
-(async () => {
+// (async () => {
+
+
+
+//   let trx: { trx: string }[] = await Prisma.client.$queryRaw`
+//   SELECT trx FROM "Session"
+//   JOIN "Payment" on "Session".uid = "Payment".session_uid
+//   WHERE "Session".paid = false AND "Session".amount = ${10} AND "Payment".card_id = ${1 }
+//   ORDER BY "Payment".id DESC
+//   LIMIT 1;
+
+// `;
+
+// // console.log(trx);
+
+
+// const session = await Prisma.client.payment.findMany();
+
+// console.log(session);
+
+
 
 //   const updateSesson: Session = await Prisma.client.session.update({
 //     where: { uid: "0282cc9f-f971-52a9-9fa0-d7d76297e3b0" },
@@ -228,7 +258,7 @@ import { Fetch } from "./Utils/Fetch";
   // console.log(banks)
 
 
-})()
+// })()
 
 
 
@@ -245,7 +275,7 @@ create session payment
 
 //   const js = {
 
-//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM3Mzc3MTcsImV4cCI6MzQ2NzQ3NTczNH0.P4V0H0RTmguc9iO_Bii5vWEShanbhXW2lvYvt6nrzAI",
+//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM4MTg3ODYsImV4cCI6MzQ2NzYzNzg3Mn0.g7Dr4Io0FJiyM91icTmyY45HdcJI5bHiCv5AodHlgY0",
 //     data: {
 //       merchant_uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
 //       amount: 10,

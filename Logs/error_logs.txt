@@ -18,3 +18,32 @@ Invalid `Prisma.client.payment.update()` invocation in
 → 74     const payment: Payment = await Prisma.client.payment.update(
 Error occurred during query execution:
 ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(Error { kind: ToSql(0), cause: Some(Error { kind: ConversionError("Unable to fit integer value '1733710530000' into an INT4 (32-bit signed integer)."), original_code: None, original_message: None }) }), transient: false })
+[+] Tue Dec 10 2024 18:15:43 GMT+1000 (Vladivostok Standard Time) PrismaClientKnownRequestError: 
+Invalid `Prisma.client.merchant.create()` invocation in
+/home/de/progects/whalepay/api.whalepay/src/Controllers/MerchantController.ts:91:77
+
+  88 
+  89 const pass_sha: string = await bcrypt.hash(password, 15);
+  90 
+→ 91 const merchant: Merchant = await Prisma.client.merchant.create(
+Unique constraint failed on the fields: (`uid`)
+[+] Tue Dec 10 2024 18:17:45 GMT+1000 (Vladivostok Standard Time) PrismaClientKnownRequestError: 
+Invalid `Prisma.client.merchant.create()` invocation in
+/home/de/progects/whalepay/api.whalepay/src/Controllers/MerchantController.ts:91:77
+
+  88 
+  89 const pass_sha: string = await bcrypt.hash(password, 15);
+  90 
+→ 91 const merchant: Merchant = await Prisma.client.merchant.create(
+Unique constraint failed on the fields: (`uid`)
+[+] Tue Dec 10 2024 18:18:31 GMT+1000 (Vladivostok Standard Time) PrismaClientKnownRequestError: 
+Invalid `Prisma.client.merchant.create()` invocation in
+/home/de/progects/whalepay/api.whalepay/src/Controllers/MerchantController.ts:91:77
+
+  88 
+  89 const pass_sha: string = await bcrypt.hash(password, 15);
+  90 
+→ 91 const merchant: Merchant = await Prisma.client.merchant.create(
+Unique constraint failed on the fields: (`uid`)
+[+] Tue Dec 10 2024 19:39:15 GMT+1000 (Vladivostok Standard Time) SyntaxError: Failed to parse JSON
+[+] Tue Dec 10 2024 19:40:37 GMT+1000 (Vladivostok Standard Time) SyntaxError: Failed to parse JSON

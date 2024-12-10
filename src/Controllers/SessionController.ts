@@ -130,7 +130,7 @@ export class SessionController {
 
                         const payment: Payment | null = await Prisma.client.payment.findUnique({ where: { session_uid: session.uid } })
 
-                        // console.log(payment)
+                        console.log(session)
 
                         if (payment) {
 
@@ -139,6 +139,8 @@ export class SessionController {
                                 /*
                                 *** Status session PENDING_CARD
                                 */
+
+                                console.log(session.status)
                                 if (session.status === "PENDING_CARD") {
                                     return {
                                         status: 200,
@@ -159,7 +161,7 @@ export class SessionController {
                                     /*
                                     *** Status session PENDING_PAY
                                     */
-                                    if (session.status === "PENDING_PAY") {
+                                    if (session.status === "PENDING_PAY" || session.status === "REQVER") {
 
                                         const data_now: number = Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}));
 
@@ -271,6 +273,15 @@ export class SessionController {
                                             status: 200,
                                             data: {
                                                 session: { status: "ERROR" }
+                                            }
+                                        }
+                                    }
+
+                                    if (session.status === "PENDING_TRX") {
+                                        return {
+                                            status: 200,
+                                            data: {
+                                                session: { status: session.status }
                                             }
                                         }
                                     }

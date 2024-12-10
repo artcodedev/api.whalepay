@@ -76,7 +76,7 @@ export class MerchantController {
 
             if (login && password && email && name && phone) {
 
-                const mechantLogin: Merchant | null = await Prisma.client.merchant.findUnique({ where: { login: login, password: password } });
+                const mechantLogin: Merchant | null = await Prisma.client.merchant.findUnique({ where: { login: login} });
 
                 if (!mechantLogin) {
 
@@ -123,6 +123,7 @@ export class MerchantController {
         }
         catch (e) {
             Logger.write(process.env.ERROR_LOGS, e);
+            console.log(e)
             return Answers.serverError('server error');
         }
     }
