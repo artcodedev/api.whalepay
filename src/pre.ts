@@ -24,6 +24,25 @@ import { Fetch } from "./Utils/Fetch";
 
 (async () => {
 
+  const token: string = await Token.sign({ session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1" }, SecretKey.secret_key_micro, 1000000000000000);
+
+  // const token: boolean = await Token.verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX3VpZCI6Ijg2MTEyYWUyLTY3NGItNTFlMi05YTk3LTFhMWJmZTZhMzdjMSIsImlhdCI6MTczMzkwMTQ2NSwiZXhwIjoxNzMzOTYxNDY1fQ.iAj9a_1rDVPVrHd7UKBnB4HwdbCJljAh4GEcwNVtkH0", SecretKey.secret_key_micro);
+
+  // console.log(token)
+  const js = {
+    token: token,
+    login: 'DKLHDFKJDGFjkdfs',
+    password: 'SOQANEMENYAITEPAROLblin!!00',
+    amount: 10,
+    timeout: Date.parse(new Date().toLocaleString("en-US", { timeZone: "Europe/Moscow" })) + 900000,
+    trx: "bb88951a-7572-4099-bb7a-18e59e413c1f",
+    session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1"
+  }
+
+  const fetch = await Fetch.request('http://localhost:3006/micro/payments/sberbank_rub', js);
+
+  console.log(fetch);
+
 
   // const st = await Prisma.client.payment.findMany();
 
@@ -49,37 +68,37 @@ import { Fetch } from "./Utils/Fetch";
   // })
   // console.log(session);
 
- 
+
   // const session = await Prisma.client.session.update({
   //   where: {uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1"},
   //   data: {status: "PENDING_PAY", paid: false, created_at: Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})) + 900000}
   // })
 
 
-//   const token: string = jsonwebtoken.sign(
+  //   const token: string = jsonwebtoken.sign(
 
-//     {login: "PkGmjkYrK84Jdf6"},
+  //     {login: "PkGmjkYrK84Jdf6"},
 
-//     SecretKey.secret_key_micro,
-    
-//     { expiresIn: Math.floor(Date.now() / 1000) + (5 * 60)}
-// );
+  //     SecretKey.secret_key_micro,
 
-//   const js = {
+  //     { expiresIn: Math.floor(Date.now() / 1000) + (5 * 60)}
+  // );
 
-//     session_id: "1212122121",
-//     token: token,
-//     login: 'PkGmjkYrK84Jdf6',
-//     password: 'Supreme01sperman--F-F-f',
-//     txr: "12121212",
-//     amount: '1',
-//     timeout: 173207352054090900093,
-//     proxy: { login: '', pass: '', ip: '', port: '' }
-//   }
+  //   const js = {
 
-//   const response = await Fetch.request("http://127.0.0.1:3005/micro/payments/sberbank_rub", js);
+  //     session_id: "1212122121",
+  //     token: token,
+  //     login: 'PkGmjkYrK84Jdf6',
+  //     password: 'Supreme01sperman--F-F-f',
+  //     txr: "12121212",
+  //     amount: '1',
+  //     timeout: 173207352054090900093,
+  //     proxy: { login: '', pass: '', ip: '', port: '' }
+  //   }
 
-//   console.log(response)
+  //   const response = await Fetch.request("http://127.0.0.1:3005/micro/payments/sberbank_rub", js);
+
+  //   console.log(response)
 
 })();
 
@@ -88,20 +107,20 @@ import { Fetch } from "./Utils/Fetch";
 (async () => {
 
 
-//   const objectMicroSberRUB = {
-//     session_uid: "adsdd",
-//     token: "sdsds",
-//     login: "sdsd",
-//     password: "dsdsdsdsd",
-//     trx: "23232322",
-//     amount: "2323232323232"
-// }
+  //   const objectMicroSberRUB = {
+  //     session_uid: "adsdd",
+  //     token: "sdsds",
+  //     login: "sdsd",
+  //     password: "dsdsdsdsd",
+  //     trx: "23232322",
+  //     amount: "2323232323232"
+  // }
 
-// const sberbank_rub_trx: string =  'sberbank_rub_trx';
+  // const sberbank_rub_trx: string =  'sberbank_rub_trx';
 
-// const request: { status: number } = await Fetch.request(`http://127.0.0.1:3006/micro/payments/sberbank_rub_trx`, objectMicroSberRUB);
+  // const request: { status: number } = await Fetch.request(`http://127.0.0.1:3006/micro/payments/sberbank_rub_trx`, objectMicroSberRUB);
 
-// console.log(request)
+  // console.log(request)
 
   // console.log(Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})))
 
@@ -125,10 +144,10 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(card)
 
-  const carda = await Prisma.client.card.update({
-    where: {id: 1},
-    data: {busy: false}
-  })
+  // const carda = await Prisma.client.card.update({
+  //   where: { id: 1 },
+  //   data: { busy: false }
+  // })
 
   // // console.log(card)
 
@@ -224,38 +243,38 @@ import { Fetch } from "./Utils/Fetch";
 //   where: {}
 // })
 
-  // const session = await Prisma.client.payment.findMany();
+// const session = await Prisma.client.payment.findMany();
 
-  // const banks = await Prisma.client.banks.createMany({
-  //   data: [
-  //     {
-  //       title: "SBER BANK",
-  //       status: true,
-  //       uid: "111",
-  //       currency: "RUB",
-  //       currencySymbol: "₽"
-  //     }, 
-  //     {
-  //       title: "ALFA BANK",
-  //       status: true,
-  //       uid: "222",
-  //       currency: "RUB",
-  //       currencySymbol: "₽"
-  //     },
-  //     {
-  //       title: "ALFA BANK USD",
-  //       status: true,
-  //       uid: "333",
-  //       currency: "USD",
-  //       currencySymbol: "$"
-  //     }
-  //   ]
-  // });
+// const banks = await Prisma.client.banks.createMany({
+//   data: [
+//     {
+//       title: "SBER BANK",
+//       status: true,
+//       uid: "111",
+//       currency: "RUB",
+//       currencySymbol: "₽"
+//     },
+//     {
+//       title: "ALFA BANK",
+//       status: true,
+//       uid: "222",
+//       currency: "RUB",
+//       currencySymbol: "₽"
+//     },
+//     {
+//       title: "ALFA BANK USD",
+//       status: true,
+//       uid: "333",
+//       currency: "USD",
+//       currencySymbol: "$"
+//     }
+//   ]
+// });
 
-  // console.log(banks)
+// console.log(banks)
 
-  // const banks = await Prisma.client.banks.findMany();
-  // console.log(banks)
+// const banks = await Prisma.client.banks.findMany();
+// console.log(banks)
 
 
 // })()
@@ -275,7 +294,7 @@ create session payment
 
 //   const js = {
 
-//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM4MTg3ODYsImV4cCI6MzQ2NzYzNzg3Mn0.g7Dr4Io0FJiyM91icTmyY45HdcJI5bHiCv5AodHlgY0",
+//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM5MDM0NDksImV4cCI6MzQ2NzgwNzE5OH0.sBDqVIjAMcCNFl3qnHZjyoQ4ZrILeh7C1qSuf1T_X5U",
 //     data: {
 //       merchant_uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
 //       amount: 10,

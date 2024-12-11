@@ -1,6 +1,6 @@
 
 
-import { Currency, Errors } from "@prisma/client"
+import { Currency, Errors, Status } from "@prisma/client"
 import { StringifyOptions } from "querystring"
 
 export interface InitPaymentData {
@@ -58,4 +58,12 @@ export interface TrxMicroservice {
     error: Errors
     trx: string
     session_uid: string
+}
+
+export interface ResponseMicroservice {
+    status: number
+    answer: Status
+    error: Errors
+    session_uid: string
+    token: string
 }

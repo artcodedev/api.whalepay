@@ -79,7 +79,6 @@ export class SessionController {
                                         domain: session.domain,
                                         gateway: `${process.env.FRONTEND}/payment?session_uid=${session.uid}`
 
-                                        // gateway: `${process.env.FRONTEND}/payment?merchant_uid=${merchant.uid}&session_uid=${session.uid}`
                                     }
                                 }
                             }
@@ -165,8 +164,7 @@ export class SessionController {
 
                                         const data_now: number = Date.parse(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}));
 
-                                        if (data_now >= Number(payment.created_at) + 900000) {
-                                        // if (false) {
+                                        if (data_now > Number(payment.created_at)) {
 
                                             await Prisma.client.payment.update({
                                                 where: { session_uid: session.uid },
@@ -174,8 +172,8 @@ export class SessionController {
                                             })
 
                                             await Prisma.client.session.update({
-                                                where: { uid: session.uid },
-                                                data: { status: session.status, paid: false }
+                                                where: { uid: payment.session_uid },
+                                                data: { status: "EXITED", paid: false }
                                             })
 
                                             await Prisma.client.card.update({
@@ -207,8 +205,8 @@ export class SessionController {
                                                                 card_number: card.card_number,
                                                                 card_valid_thru: card.card_valid_thru
                                                             },
-                                                            timeout: Number(session.created_at),
-                                                            amount: session.amount,
+                                                            timeout: Number(payment.created_at),
+                                                            amount: payment.amount,
                                                             currency_symbol: payment.currency_symbol
                                                         },
                                                         domain: session.domain

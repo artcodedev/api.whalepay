@@ -3,7 +3,7 @@ import { Elysia } from "elysia";
 /*
 *** Interface models
 */
-import { InitPaymentData, GetCard, TrxMicroservice} from './/Models/PaymentControllerModels';
+import { InitPaymentData, GetCard, TrxMicroservice, ResponseMicroservice} from './/Models/PaymentControllerModels';
 import { InitSessionFetchRequestData } from './Models/SessionControllerModels';
 import { Auth, Signup, MerchantByUID, InitSessionDataRequest } from "./Models/MerchantControllerModels";
 import { Callback, ResponseSberBankRUB, SberBankRubBody } from "../src/Models/MicroControllerModels";
@@ -46,6 +46,9 @@ app.post('/api/payment/getcard', async ({body}: {body: GetCard}) => await Paymen
 app.post('/api/payment/checkpay', async ({body}: {body: {session_uid: string}}) => await PaymentController.checkPay(body))
 
 app.post('/api/payment/trxmicroservice', ({body}: {body: TrxMicroservice}) => PaymentController.getTrxMicroservice(body));
+
+app.post('/api/payment/responsemicroservice', ({body}: {body:  ResponseMicroservice}) => PaymentController.getResponseMicroservice(body));
+
 
 /*
 *** Get all active banks
