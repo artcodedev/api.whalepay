@@ -29,19 +29,19 @@ import { Fetch } from "./Utils/Fetch";
   // const token: boolean = await Token.verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX3VpZCI6Ijg2MTEyYWUyLTY3NGItNTFlMi05YTk3LTFhMWJmZTZhMzdjMSIsImlhdCI6MTczMzkwMTQ2NSwiZXhwIjoxNzMzOTYxNDY1fQ.iAj9a_1rDVPVrHd7UKBnB4HwdbCJljAh4GEcwNVtkH0", SecretKey.secret_key_micro);
 
   // console.log(token)
-  const js = {
-    token: token,
-    login: 'DKLHDFKJDGFjkdfs',
-    password: 'SOQANEMENYAITEPAROLblin!!00',
-    amount: 10,
-    timeout: Date.parse(new Date().toLocaleString("en-US", { timeZone: "Europe/Moscow" })) + 900000,
-    trx: "bb88951a-7572-4099-bb7a-18e59e413c1f",
-    session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1"
-  }
+  // const js = {
+  //   token: token,
+  //   login: 'DKLHDFKJDGFjkdfs',
+  //   password: 'SOQANEMENYAITEPAROLblin!!00',
+  //   amount: 10,
+  //   timeout: Date.parse(new Date().toLocaleString("en-US", { timeZone: "Europe/Moscow" })) + 900000,
+  //   trx: "bb88951a-7572-4099-bb7a-18e59e413c1f",
+  //   session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1"
+  // }
 
-  const fetch = await Fetch.request('http://localhost:3006/micro/payments/sberbank_rub', js);
+  // const fetch = await Fetch.request('http://localhost:3006/micro/payments/sberbank_rub', js);
 
-  console.log(fetch);
+  // console.log(fetch);
 
 
   // const st = await Prisma.client.payment.findMany();
@@ -294,7 +294,7 @@ create session payment
 
 //   const js = {
 
-//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM5MDM0NDksImV4cCI6MzQ2NzgwNzE5OH0.sBDqVIjAMcCNFl3qnHZjyoQ4ZrILeh7C1qSuf1T_X5U",
+//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM5MTAxODEsImV4cCI6MzQ2NzgyMDY2Mn0.w6ilNeyFbIBPggxlpW0s7FonYlbcV9qE34ULinUbHsE",
 //     data: {
 //       merchant_uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
 //       amount: 10,
@@ -306,7 +306,6 @@ create session payment
 //     }
 
 //   }
-
 
 //   const response = await fetch("localhost:5000/api/session/create", {
 
