@@ -4,7 +4,7 @@ import fs from 'fs-extra'
 
 export class Logger {
 
-    public static async write(file: string | undefined, message: any) {
+    public static async write(file: string | undefined, message: any): Promise<void> {
 
         if (file && message) {
 

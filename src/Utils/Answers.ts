@@ -3,6 +3,10 @@ import { AnswersError } from "../Models/Answers/AnswersErrorModels";
 
 export class Answers {
 
+    public static ok(msg: string): AnswersError {
+        return {status: 200, message: msg}
+    }
+
     public static wrong(msg: string): AnswersError {
         return {status: 505, message: msg}
     }

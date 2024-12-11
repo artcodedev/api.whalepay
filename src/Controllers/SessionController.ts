@@ -185,8 +185,6 @@ export class SessionController {
 
                                             return { status: 200, data: { session: { status: session.status } } }
 
-
-
                                         } else {
 
                                             const card = await Prisma.client.card.findUnique({ where: { id: payment.card_id } });

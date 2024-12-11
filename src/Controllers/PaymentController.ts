@@ -90,7 +90,7 @@ export class PaymentController {
                 }
             }
 
-            return 200
+            return 500
 
         }
         catch (e) {
@@ -335,8 +335,6 @@ export class PaymentController {
                                         return { status: microservice == 200 ? 444 : 500 }
                                     }
 
-
-
                                     return Answers.notFound("Can not update payment");
                                 }
 
@@ -420,7 +418,6 @@ export class PaymentController {
                             }
                         });
 
-
                         /*
                         *** Start microservice
                         */
@@ -441,8 +438,14 @@ export class PaymentController {
                             }
 
                         }
+
+                        return microservice == 200 ? Answers.ok("ok ") : Answers.wrong("microservice pay have error")
                     }
+
+                    return Answers.wrong("session not update")
                 }
+
+                return Answers.wrong("session not found")
 
             }
 
