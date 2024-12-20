@@ -45,10 +45,6 @@ export class MicroController {
 
         try {
 
-
-            console.log(body)
-
-
             if (body.token) {
 
                 const token: boolean = await Token.verify(body.token, SecretKey.secret_key_micro);
@@ -56,8 +52,6 @@ export class MicroController {
                 if (token) {
 
                     const session: Session | null = await Prisma.client.session.findUnique({ where: { uid: body.session_uid } });
-
-                
 
                     if (session) {
 

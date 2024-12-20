@@ -1,5 +1,5 @@
 import { Prisma } from "../Utils/Prisma";
-import { AddUser, DeleteUser } from "../Models/AdminCRUDControllerModels";
+import { AddUser, DeleteUser, UpdateUser } from "../Models/AdminCRUDControllerModels";
 import { AnswersError } from "../Models/Answers/AnswersErrorModels";
 import { SecretKey } from "../Secure/SeckretKey";
 import { Answers } from "../Utils/Answers";
@@ -74,9 +74,11 @@ class AdminCRUDController {
         try {
 
             if (data.token) {
+
                 const varify_token: boolean = await Token.verify(data.token, SecretKey.secret_key);
 
                 if (varify_token) {
+
                     if (data.login && data.login) {
 
                         const delete_user  = await Prisma.client.usersAdmin.delete({
@@ -100,7 +102,34 @@ class AdminCRUDController {
         }
     }
 
-    public static async update_user(): Promise<void> { }
+    public static async update_user(data: UpdateUser): Promise<AnswersError> {
+
+        try {
+
+            if (data.token) {
+
+                const varify_token: boolean = await Token.verify(data.token, SecretKey.secret_key);
+
+                if (varify_token) {
+                    
+                    if (data.data.login) {
+
+                        // const update_user = await Prisma.client.usersAdmin.update();
+                    }
+
+                    return Answers.wrong("wrong data");
+                }
+
+                return Answers.wrong("token is not correct");
+            }
+
+            return Answers.wrong("data is not correct");
+        }
+        catch (e) {
+            Logger.write(process.env.ERROR_LOGS, e);
+            return Answers.serverError("error in server");
+        }
+    }
 
     public static async get_user(): Promise<void> { }
 
