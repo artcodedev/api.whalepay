@@ -16,9 +16,13 @@ import {SessionController} from '../src/Controllers/SessionController';
 import {MerchantController} from '../src/Controllers/MerchantController';
 import { PaymentController } from '../src/Controllers/PaymentController';
 import { MicroController } from '../src/Controllers/MicroController';
-import { AddUser, AdminAuth, DeleteUser, GetAllUsers, UpdateUser } from "./Models/AdminCRUDControllerModels";
+import { AddUser, AdminAuth, DeleteUser, GetAllUsers, UpdateUser, VerifyAuthToken } from "./Models/AdminCRUDControllerModels";
 import AdminCRUDController from "./Controllers/AdminCRUDController";
 import AdminAuthController from "./Controllers/AdminAuthController";
+import AdminCardController from "./Controllers/AdminCardController";
+import { RequestGETCard } from "./Models/AdminCardControllerModel";
+import AdminBanksController from "./Controllers/AdminBanksController";
+import { RequestGETBanks } from "./Models/AdminBanksControllerModel";
 
 
 const app = new Elysia()
@@ -68,6 +72,15 @@ app.post('/api/admin/get_all_users', async ({body}: {body: GetAllUsers}) => awai
 */
 app.post('/api/admin/auth', async ({body}: {body: AdminAuth}) => await AdminAuthController.auth(body));
 
+app.post('/api/admin/verify', async ({body}: {body: VerifyAuthToken}) => await AdminAuthController.verify_auth(body));
+
+/*
+*** Admin get data for administration
+*/
+
+app.post('/api/admin/get_cards', async ({body}: {body: RequestGETCard}) => await AdminCardController.get(body));
+
+app.post('/api/admin/get_banks', async ({body}: {body: RequestGETBanks}) => await AdminBanksController.get(body));
 
 
 /*

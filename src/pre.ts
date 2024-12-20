@@ -29,18 +29,14 @@ import { Fetch } from "./Utils/Fetch";
 (async () => {
 
 
-  // const js = {
-  //   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzQ2NjM5NjYsImV4cCI6MzQ2OTMyODIzMn0.EzPSqqMFSM3DyOE-BMtBbPpHXOPKHm0lzoUnwyARhdY',
-  //   data: {
-  //     login: 'loginsine1',
-  //     password: 'passsome1',
-  //     name: 'danil'
-  //   }
-  // }
+  const js = {
+    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzQ2NjM5NjYsImV4cCI6MzQ2OTMyODIzMn0.EzPSqqMFSM3DyOE-BMtBbPpHXOPKHm0lzoUnwyARhdY',
 
-  // const fetch = await Fetch.request('http://localhost:5000/api/admin/create', js);
+  }
 
-  // console.log(fetch);
+  const fetch = await Fetch.request('http://localhost:5000/api/admin/get_banks', js);
+
+  console.log(fetch);
 
 
 
@@ -53,16 +49,16 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(fetch);
 
-  const js = {
-    login: 'loginsine1',
-    password: 'passsome1'
-  }
+  // const js = {
 
-  const fetch = await Fetch.request('http://localhost:5000/api/admin/auth', js);
+  //   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImxvZ2luc2luZTEiLCJpYXQiOjE3MzQ2ODA1NDcsImV4cCI6MTczNjQyNjAyNzU0N30.FgCmH-A3Hp4_xGdC0MxVKNHMTllS68_tM6iStl0U5gU'
+  // }
 
-  console.log(fetch);
+  // const fetch = await Fetch.request('http://localhost:5000/api/admin/verify', js);
 
-  // const user = await Prisma.client.usersAdmin.findMany();
+  // console.log(fetch);
+
+  // const user = await Prisma.client.banks.findMany();
 
   // console.log(user)
 
