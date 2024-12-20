@@ -53,9 +53,18 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(fetch);
 
-  const user = await Prisma.client.usersAdmin.findMany();
+  const js = {
+    login: 'loginsine1',
+    password: 'passsome1'
+  }
 
-  console.log(user)
+  const fetch = await Fetch.request('http://localhost:5000/api/admin/auth', js);
+
+  console.log(fetch);
+
+  // const user = await Prisma.client.usersAdmin.findMany();
+
+  // console.log(user)
 
 
 

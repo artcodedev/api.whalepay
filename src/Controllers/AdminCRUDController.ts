@@ -1,10 +1,11 @@
 import { Prisma } from "../Utils/Prisma";
-import { AddUser, DeleteUser, UpdateUser } from "../Models/AdminCRUDControllerModels";
+import { AddUser, DeleteUser, GetAllUsers, UpdateUser } from "../Models/AdminCRUDControllerModels";
 import { AnswersError } from "../Models/Answers/AnswersErrorModels";
 import { SecretKey } from "../Secure/SeckretKey";
 import { Answers } from "../Utils/Answers";
 import { Logger } from "../Utils/Logger";
 import { Token } from "../Utils/Token";
+import { UsersAdmin } from "@prisma/client";
 
 
 
@@ -102,6 +103,9 @@ class AdminCRUDController {
         }
     }
 
+    /*
+    *** Update user
+    */
     public static async update_user(data: UpdateUser): Promise<AnswersError> {
 
         try {
@@ -114,7 +118,16 @@ class AdminCRUDController {
                     
                     if (data.data.login) {
 
-                        // const update_user = await Prisma.client.usersAdmin.update();
+                        const update_user = await Prisma.client.usersAdmin.update({
+                            where: {login: data.data.login},
+                            data: {
+                                login: data.data.login,
+                                password: data.data.password,
+                                name: data.data.name
+                            }
+                        });
+
+                        return update_user ? Answers.ok("user updated") : Answers.wrong("user will be not updated");
                     }
 
                     return Answers.wrong("wrong data");
@@ -131,7 +144,40 @@ class AdminCRUDController {
         }
     }
 
-    public static async get_user(): Promise<void> { }
+    /*
+    *** Get all users use mechant_uid
+    */
+    public static async get_all_user(data: GetAllUsers): Promise<AnswersError | UsersAdmin[]> {
+        try {
+
+            if (data.token) {
+
+                const varify_token: boolean = await Token.verify(data.token, SecretKey.secret_key);
+
+                if (varify_token) {
+                    
+                    if (data.marchant_uid) {
+
+                        const get_all_user = await Prisma.client.usersAdmin.findMany({
+                            where: {merchant_uid: data.marchant_uid}
+                        });
+
+                        return get_all_user ? get_all_user : Answers.wrong("can not get users");
+                    }
+
+                    return Answers.wrong("wrong data");
+                }
+
+                return Answers.wrong("token is not correct");
+            }
+
+            return Answers.wrong("data is not correct");
+        }
+        catch (e) {
+            Logger.write(process.env.ERROR_LOGS, e);
+            return Answers.serverError("error in server");
+        }
+    }
 
 }
 

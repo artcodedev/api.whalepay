@@ -16,8 +16,9 @@ import {SessionController} from '../src/Controllers/SessionController';
 import {MerchantController} from '../src/Controllers/MerchantController';
 import { PaymentController } from '../src/Controllers/PaymentController';
 import { MicroController } from '../src/Controllers/MicroController';
-import { AddUser, DeleteUser } from "./Models/AdminCRUDControllerModels";
+import { AddUser, AdminAuth, DeleteUser, GetAllUsers, UpdateUser } from "./Models/AdminCRUDControllerModels";
 import AdminCRUDController from "./Controllers/AdminCRUDController";
+import AdminAuthController from "./Controllers/AdminAuthController";
 
 
 const app = new Elysia()
@@ -54,9 +55,19 @@ app.post('/api/payment/responsemicroservice', ({body}: {body:  ResponseMicroserv
 /*
 *** Admin CRUD
 */
-app.post('/api/admin/create', async ({body}: {body: AddUser}) => await AdminCRUDController.create_user(body));
+app.post('/api/admin/create_user', async ({body}: {body: AddUser}) => await AdminCRUDController.create_user(body));
 
-app.post('/api/admin/delete', async ({body}: {body: DeleteUser}) => await AdminCRUDController.delete_user(body));
+app.post('/api/admin/delete_user', async ({body}: {body: DeleteUser}) => await AdminCRUDController.delete_user(body));
+
+app.post('/api/admin/update_user', async ({body}: {body: UpdateUser}) => await AdminCRUDController.update_user(body));
+
+app.post('/api/admin/get_all_users', async ({body}: {body: GetAllUsers}) => await AdminCRUDController.get_all_user(body));
+
+/*
+*** Admin auth
+*/
+app.post('/api/admin/auth', async ({body}: {body: AdminAuth}) => await AdminAuthController.auth(body));
+
 
 
 /*
