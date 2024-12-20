@@ -27,4 +27,24 @@ export class Token {
             return false
         }
     }
+
+    /*
+    *** Parse token
+    */
+    public static async parseJWT(token: string): Promise<string> {
+
+        try {
+
+            const base64Payload: string = token.split('.')[1];
+
+            const payload: Buffer = Buffer.from(base64Payload, 'base64');
+
+            return JSON.parse(payload.toString()).uid;
+        }
+        catch (e) {
+            Logger.write(process.env.ERROR_LOGS, e);
+            return ''
+        }
+
+    }
 }

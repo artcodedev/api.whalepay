@@ -22,9 +22,50 @@ import { Prisma } from "../src/Utils/Prisma";
 import { Fetch } from "./Utils/Fetch";
 
 
+
+
+
+
 (async () => {
 
-  const token: string = await Token.sign({ session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1" }, SecretKey.secret_key_micro, 1000000000000000);
+
+  // const js = {
+  //   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzQ2NjM5NjYsImV4cCI6MzQ2OTMyODIzMn0.EzPSqqMFSM3DyOE-BMtBbPpHXOPKHm0lzoUnwyARhdY',
+  //   data: {
+  //     login: 'loginsine1',
+  //     password: 'passsome1',
+  //     name: 'danil'
+  //   }
+  // }
+
+  // const fetch = await Fetch.request('http://localhost:5000/api/admin/create', js);
+
+  // console.log(fetch);
+
+
+
+  // const js = {
+  //   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzQ2NjM5NjYsImV4cCI6MzQ2OTMyODIzMn0.EzPSqqMFSM3DyOE-BMtBbPpHXOPKHm0lzoUnwyARhdY',
+  //   login: 'loginsine1',
+  // }
+
+  // const fetch = await Fetch.request('http://localhost:5000/api/admin/delete', js);
+
+  // console.log(fetch);
+
+  const user = await Prisma.client.usersAdmin.findMany();
+
+  console.log(user)
+
+
+
+
+
+
+
+
+
+  // const token: string = await Token.sign({ session_uid: "86112ae2-674b-51e2-9a97-1a1bfe6a37c1" }, SecretKey.secret_key_micro, 1000000000000000);
 
   // const token: boolean = await Token.verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX3VpZCI6Ijg2MTEyYWUyLTY3NGItNTFlMi05YTk3LTFhMWJmZTZhMzdjMSIsImlhdCI6MTczMzkwMTQ2NSwiZXhwIjoxNzMzOTYxNDY1fQ.iAj9a_1rDVPVrHd7UKBnB4HwdbCJljAh4GEcwNVtkH0", SecretKey.secret_key_micro);
 

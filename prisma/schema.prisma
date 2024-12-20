@@ -144,3 +144,11 @@ model Banks {
   currency       Currency
   currencySymbol String
 }
+
+model UsersAdmin {
+  id           Int    @id @default(autoincrement())
+  name         String
+  login        String  @unique
+  password     String
+  merchant_uid String
+}

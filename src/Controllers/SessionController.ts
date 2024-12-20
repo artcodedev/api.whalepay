@@ -123,8 +123,6 @@ export class SessionController {
 
                     const merchant: Merchant | null = await Prisma.client.merchant.findUnique({ where: { id: session.merchant_id } });
 
-                    // console.log(merchant)
-
                     if (merchant) {
 
                         const payment: Payment | null = await Prisma.client.payment.findUnique({ where: { session_uid: session.uid } })

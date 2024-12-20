@@ -16,6 +16,8 @@ import {SessionController} from '../src/Controllers/SessionController';
 import {MerchantController} from '../src/Controllers/MerchantController';
 import { PaymentController } from '../src/Controllers/PaymentController';
 import { MicroController } from '../src/Controllers/MicroController';
+import { AddUser, DeleteUser } from "./Models/AdminCRUDControllerModels";
+import AdminCRUDController from "./Controllers/AdminCRUDController";
 
 
 const app = new Elysia()
@@ -48,6 +50,13 @@ app.post('/api/payment/checkpay', async ({body}: {body: {session_uid: string}}) 
 app.post('/api/payment/trxmicroservice', ({body}: {body: TrxMicroservice}) => PaymentController.getTrxMicroservice(body));
 
 app.post('/api/payment/responsemicroservice', ({body}: {body:  ResponseMicroservice}) => PaymentController.getResponseMicroservice(body));
+
+/*
+*** Admin CRUD
+*/
+app.post('/api/admin/create', async ({body}: {body: AddUser}) => await AdminCRUDController.create_user(body));
+
+app.post('/api/admin/delete', async ({body}: {body: DeleteUser}) => await AdminCRUDController.delete_user(body));
 
 
 /*
