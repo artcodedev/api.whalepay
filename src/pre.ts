@@ -1,4 +1,4 @@
-import { Currency, Session } from "@prisma/client";
+import { Banks, Currency, Session } from "@prisma/client";
 
 import jsonwebtoken from "jsonwebtoken";
 import { SecretKey } from '../src/Secure/SeckretKey'
@@ -29,14 +29,19 @@ import { Fetch } from "./Utils/Fetch";
 (async () => {
 
 
-  const js = {
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzQ2NjM5NjYsImV4cCI6MzQ2OTMyODIzMn0.EzPSqqMFSM3DyOE-BMtBbPpHXOPKHm0lzoUnwyARhdY',
+  // const js = {
+  //   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzQ2NjM5NjYsImV4cCI6MzQ2OTMyODIzMn0.EzPSqqMFSM3DyOE-BMtBbPpHXOPKHm0lzoUnwyARhdY',
 
-  }
+  // }
 
-  const fetch = await Fetch.request('http://localhost:5000/api/admin/get_banks', js);
+  // const fetch = await Fetch.request('http://localhost:5000/api/admin/get_banks', js);
 
-  console.log(fetch);
+  // console.log(fetch);
+
+
+  // const sort = fetch.data.sort((a: Banks, b: Banks) => b.id - a.id);
+
+  // console.log(sort)
 
 
 
@@ -221,31 +226,37 @@ import { Fetch } from "./Utils/Fetch";
 
 
 
-// (async () => {
+(async () => {
 
-//   const rt = await Prisma.client.card.create({
-//     data: {
-//       id: 1,
-//     card_number: "2202208069490903",
-//     card_login: "DFKodoisdf423",
-//     card_password: "parolinemenyautsaAFAXA_!369",
-//     card_phone: "+79841562811",
-//     card_holder: " ",
-//     card_receiver: "Денис Андреевич К.",
-//     card_cvv: " ",
-//     card_valid_thru: "10/20",
-//     card_pin: " ",
-//     card_secret: " ",
-//     active: true,
-//     busy: false,
-//     balance: 0,
-//     withdraw_avaliable: true,
-//     bank_uid: '111'
-//     }
-//   })
+  // const rt = await Prisma.client.card.create({
+  //   data: {
+  //     id: 1,
+  //   card_number: "2202208069490903",
+  //   card_login: "DFKodoisdf423",
+  //   card_password: "parolinemenyautsaAFAXA_!369",
+  //   card_phone: "+79841562811",
+  //   card_holder: " ",
+  //   card_receiver: "Денис Андреевич К.",
+  //   card_cvv: " ",
+  //   card_valid_thru: "10/20",
+  //   card_pin: " ",
+  //   card_secret: " ",
+  //   active: true,
+  //   busy: false,
+  //   balance: 0,
+  //   withdraw_avaliable: true,
+  //   bank_uid: '111'
+  //   }
+  // })
 
-//   console.log(rt)
-// })();
+  // console.log(rt)
+
+
+  const cards = await Prisma.client.card.findMany();
+
+  console.log(cards);
+
+})();
 
 
 

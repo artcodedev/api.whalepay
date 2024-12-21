@@ -56,9 +56,11 @@ class AdminAuthController {
     /*
     *** Verify token for administrations
     */
-    public static async verify_auth(token: VerifyAuthToken) {
+    public static async verify_auth(token: VerifyAuthToken): Promise<Answers> {
 
         try {
+
+            console.log(token);
 
             if (token.token) {
 

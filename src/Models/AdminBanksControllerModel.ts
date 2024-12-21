@@ -12,3 +12,9 @@ export interface ResponseGETBanks {
     status: number
     data: Banks[]
 }
+
+export interface UpdateBank {
+    uid: string
+    status: boolean
+    token: string
+}

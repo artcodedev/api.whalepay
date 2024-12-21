@@ -22,7 +22,8 @@ import AdminAuthController from "./Controllers/AdminAuthController";
 import AdminCardController from "./Controllers/AdminCardController";
 import { RequestGETCard } from "./Models/AdminCardControllerModel";
 import AdminBanksController from "./Controllers/AdminBanksController";
-import { RequestGETBanks } from "./Models/AdminBanksControllerModel";
+import { RequestGETBanks, UpdateBank } from "./Models/AdminBanksControllerModel";
+import { UpdateCard } from "./Models/AdminCardControllerModels";
 
 
 const app = new Elysia()
@@ -80,7 +81,12 @@ app.post('/api/admin/verify', async ({body}: {body: VerifyAuthToken}) => await A
 
 app.post('/api/admin/get_cards', async ({body}: {body: RequestGETCard}) => await AdminCardController.get(body));
 
+app.post('/api/admin/update_card', async ({body}: {body: UpdateCard}) => await AdminCardController.update(body));
+
 app.post('/api/admin/get_banks', async ({body}: {body: RequestGETBanks}) => await AdminBanksController.get(body));
+
+app.post('/api/admin/update_banks', async ({body}: {body: UpdateBank}) => await AdminBanksController.update(body));
+
 
 
 /*
