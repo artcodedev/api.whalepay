@@ -127,8 +127,6 @@ export class SessionController {
 
                         const payment: Payment | null = await Prisma.client.payment.findUnique({ where: { session_uid: session.uid } })
 
-                        console.log(session)
-
                         if (payment) {
 
                             if (!payment.card_id && payment.bank_uid) {
@@ -136,8 +134,6 @@ export class SessionController {
                                 /*
                                 *** Status session PENDING_CARD
                                 */
-
-                                console.log(session.status)
                                 if (session.status === "PENDING_CARD") {
                                     return {
                                         status: 200,

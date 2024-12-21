@@ -24,6 +24,8 @@ import { RequestGETCard } from "./Models/AdminCardControllerModel";
 import AdminBanksController from "./Controllers/AdminBanksController";
 import { RequestGETBanks, UpdateBank } from "./Models/AdminBanksControllerModel";
 import { UpdateCard } from "./Models/AdminCardControllerModels";
+import { RequestGETTransactions, UpdateTransaction } from "./Models/AdminTransactionsControllerModel";
+import AdminTransactinsController from "./Controllers/AdminTransactionsController";
 
 
 const app = new Elysia()
@@ -86,6 +88,12 @@ app.post('/api/admin/update_card', async ({body}: {body: UpdateCard}) => await A
 app.post('/api/admin/get_banks', async ({body}: {body: RequestGETBanks}) => await AdminBanksController.get(body));
 
 app.post('/api/admin/update_banks', async ({body}: {body: UpdateBank}) => await AdminBanksController.update(body));
+
+app.post('/api/admin/get_transactions', async ({body}: {body: RequestGETTransactions}) => await AdminTransactinsController.get(body));
+
+app.post('/api/admin/update_transaction', async ({body}: {body: UpdateTransaction}) => await AdminTransactinsController.update(body));
+
+
 
 
 

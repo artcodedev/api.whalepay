@@ -43,6 +43,12 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(sort)
 
+  const session = await Prisma.client.session.findFirst({
+    where: {uid: '6d6d6441-766f-59b2-a9ab-a0d4c7d8bd9f'}
+  });
+
+  console.log(session);
+
 
 
   // const js = {
@@ -252,9 +258,9 @@ import { Fetch } from "./Utils/Fetch";
   // console.log(rt)
 
 
-  const cards = await Prisma.client.card.findMany();
+  // const cards = await Prisma.client.card.findMany();
 
-  console.log(cards);
+  // console.log(cards);
 
 })();
 
@@ -351,7 +357,7 @@ create session payment
 
 //   const js = {
 
-//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzM5MTAxODEsImV4cCI6MzQ2NzgyMDY2Mn0.w6ilNeyFbIBPggxlpW0s7FonYlbcV9qE34ULinUbHsE",
+//     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzQ3NTg5MDYsImV4cCI6MzQ2OTUxODExMn0.VO3kB5e5hiuriTHRidgECrQKFTMBUvUDK9_zyIuRNxw",
 //     data: {
 //       merchant_uid: "8f024286-aadb-568d-bb52-7d3b726216e7",
 //       amount: 10,
