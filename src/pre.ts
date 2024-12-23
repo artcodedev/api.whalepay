@@ -43,8 +43,9 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(sort)
 
-  const session = await Prisma.client.session.findFirst({
-    where: {uid: '6d6d6441-766f-59b2-a9ab-a0d4c7d8bd9f'}
+  const session = await Prisma.client.session.update({
+    where: {uid: 'aa2f4001-1783-5cfb-91ce-08b51412f9b1'},
+    data: {status: 'PROCESS'}
   });
 
   console.log(session);
