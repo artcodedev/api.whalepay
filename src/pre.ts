@@ -28,7 +28,6 @@ import { Fetch } from "./Utils/Fetch";
 
 (async () => {
 
-
   // const js = {
   //   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ZjAyNDI4Ni1hYWRiLTU2OGQtYmI1Mi03ZDNiNzI2MjE2ZTciLCJpYXQiOjE3MzQ2NjM5NjYsImV4cCI6MzQ2OTMyODIzMn0.EzPSqqMFSM3DyOE-BMtBbPpHXOPKHm0lzoUnwyARhdY',
 
@@ -43,12 +42,21 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(sort)
 
-  const session = await Prisma.client.session.update({
-    where: {uid: 'aa2f4001-1783-5cfb-91ce-08b51412f9b1'},
-    data: {status: 'PROCESS'}
-  });
+  // const session = await Prisma.client.session.update({
+  //   where: {uid: 'aa2f4001-1783-5cfb-91ce-08b51412f9b1'},
+  //   data: {status: 'PROCESS'}
+  // });
 
-  console.log(session);
+  // console.log(session);
+
+  const card = await Prisma.client.card.update({
+    where: {card_number: '2202208069490903'},
+    data: {busy: false, balance: 0}
+  })
+
+  console.log(card)
+
+  
 
 
 
