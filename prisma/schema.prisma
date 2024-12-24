@@ -46,8 +46,6 @@ enum WithdrawStatus {
   PENDING
   SUCCESS
   FAILED
-  ERROR
-  SERVERFAIL
 }
 
 model Merchant {
@@ -133,7 +131,8 @@ model Withdraw {
   status               WithdrawStatus
   message              String?
   created_at           BigInt
-  updated_at           String?
+  updated_at           BigInt
+  status_error         Errors?
 }
 
 model Banks {
@@ -148,7 +147,7 @@ model Banks {
 model UsersAdmin {
   id           Int    @id @default(autoincrement())
   name         String
-  login        String  @unique
+  login        String @unique
   password     String
   merchant_uid String
 }
