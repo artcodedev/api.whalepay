@@ -10,6 +10,7 @@ import { Banks, Session } from "@prisma/client";
 export class BacksController {
 
     public static async banks(session_uid: { session_uid: string }): Promise<BanksResponse | AnswersError> {
+        
         try {
 
             const session: Session | null = await Prisma.client.session.findUnique({

@@ -40,6 +40,8 @@ enum Errors {
   REQVER
   OTHER
   NONE
+  CODESMS
+  DELETESMS
 }
 
 enum WithdrawStatus {
