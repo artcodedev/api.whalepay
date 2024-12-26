@@ -26,6 +26,8 @@ import { RequestGETBanks, UpdateBank } from "./Models/AdminBanksControllerModel"
 import { UpdateCard } from "./Models/AdminCardControllerModels";
 import { RequestGETTransactions, UpdateTransaction } from "./Models/AdminTransactionsControllerModel";
 import AdminTransactinsController from "./Controllers/AdminTransactionsController";
+import { GetSMS } from "./Models/AdminSMSControllerModel";
+import AdminSMSController from "./AdminSMSController";
 
 
 const app = new Elysia()
@@ -59,6 +61,7 @@ app.post('/api/payment/trxmicroservice', ({body}: {body: TrxMicroservice}) => Pa
 
 app.post('/api/payment/responsemicroservice', ({body}: {body:  ResponseMicroservice}) => PaymentController.getResponseMicroservice(body));
 
+
 /*
 *** Admin CRUD
 */
@@ -80,7 +83,6 @@ app.post('/api/admin/verify', async ({body}: {body: VerifyAuthToken}) => await A
 /*
 *** Admin get data for administration
 */
-
 app.post('/api/admin/get_cards', async ({body}: {body: RequestGETCard}) => await AdminCardController.get(body));
 
 app.post('/api/admin/update_card', async ({body}: {body: UpdateCard}) => await AdminCardController.update(body));
@@ -93,8 +95,7 @@ app.post('/api/admin/get_transactions', async ({body}: {body: RequestGETTransact
 
 app.post('/api/admin/update_transaction', async ({body}: {body: UpdateTransaction}) => await AdminTransactinsController.update(body));
 
-
-
+app.post('/api/admin/getallsms', async ({body}: {body: GetSMS}) => await AdminSMSController.getSms(body));
 
 
 /*
