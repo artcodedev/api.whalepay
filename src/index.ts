@@ -28,6 +28,7 @@ import { RequestGETTransactions, UpdateTransaction } from "./Models/AdminTransac
 import AdminTransactinsController from "./Controllers/AdminTransactionsController";
 import { GetSMS } from "./Models/AdminSMSControllerModel";
 import AdminSMSController from "./Controllers/AdminSMSController";
+import AdminPhonesController from "./Controllers/AdminPhonesController";
 
 
 const app = new Elysia()
@@ -96,6 +97,8 @@ app.post('/api/admin/get_transactions', async ({body}: {body: RequestGETTransact
 app.post('/api/admin/update_transaction', async ({body}: {body: UpdateTransaction}) => await AdminTransactinsController.update(body));
 
 app.post('/api/admin/getallsms', async ({body}: {body: GetSMS}) => await AdminSMSController.getSms(body));
+
+app.post('/api/admin/getallphones', async ({body}: {body: VerifyAuthToken}) => await AdminPhonesController.getPhones(body));
 
 
 /*
