@@ -54,7 +54,7 @@ import { Fetch } from "./Utils/Fetch";
     data: {busy: false, balance: 0}
   })
 
-  console.log(card)
+
 
   
 
