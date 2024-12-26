@@ -27,7 +27,7 @@ import { UpdateCard } from "./Models/AdminCardControllerModels";
 import { RequestGETTransactions, UpdateTransaction } from "./Models/AdminTransactionsControllerModel";
 import AdminTransactinsController from "./Controllers/AdminTransactionsController";
 import { GetSMS } from "./Models/AdminSMSControllerModel";
-import AdminSMSController from "./AdminSMSController";
+import AdminSMSController from "./Controllers/AdminSMSController";
 
 
 const app = new Elysia()

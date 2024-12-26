@@ -1,32 +1,9 @@
-import { GetSMS } from "./Models/AdminSMSControllerModel";
-import { SecretKey } from "./Secure/SeckretKey";
-import { Answers } from "./Utils/Answers";
-import { Fetch } from "./Utils/Fetch";
-import { Logger } from "./Utils/Logger";
-import { Token } from "./Utils/Token";
-
-export interface TTY {
-    phone:   string
-    tty:     string
-}
-
-export interface GetTTY {
-    status: boolean
-    data: TTY[]
-}
-
-export interface SMSData {
-    id: number
-    phone: string
-    date: string
-    message: string
-} 
-
-export interface GetSMSData {
-    status: boolean
-    data: SMSData[]
-}
-
+import { GetSMS, GetSMSData, GetTTY } from "../Models/AdminSMSControllerModel";
+import { SecretKey } from "../Secure/SeckretKey";
+import { Answers } from "../Utils/Answers";
+import { Fetch } from "../Utils/Fetch";
+import { Logger } from "../Utils/Logger";
+import { Token } from "../Utils/Token";
 
 
 class AdminSMSController {
