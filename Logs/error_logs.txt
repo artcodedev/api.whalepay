@@ -54,3 +54,12 @@ Unique constraint failed on the fields: (`uid`)
 [+] Sat Dec 21 2024 11:23:48 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
 [+] Sat Dec 21 2024 11:25:07 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
 [+] Sat Dec 21 2024 11:26:54 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
+[+] Thu Dec 26 2024 20:29:08 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
+[+] Thu Dec 26 2024 20:29:48 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
+[+] Thu Dec 26 2024 20:32:46 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
+[+] Thu Dec 26 2024 20:38:22 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
+[+] Thu Dec 26 2024 20:39:54 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
+[+] Thu Dec 26 2024 20:40:25 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
+[+] Thu Dec 26 2024 20:40:33 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
+[+] Thu Dec 26 2024 20:42:41 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
+[+] Thu Dec 26 2024 20:43:14 GMT+1000 (Vladivostok Standard Time) JsonWebTokenError: jwt must be a string
