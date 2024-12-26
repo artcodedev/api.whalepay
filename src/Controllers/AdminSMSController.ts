@@ -8,6 +8,9 @@ import { Token } from "../Utils/Token";
 
 class AdminSMSController {
 
+    /*
+    *** Get all sms use number phone
+    */
     public static async getSms(data: GetSMS) {
 
         try {

@@ -10,6 +10,9 @@ import { AdminTransactionsResponse, RequestGETTransactions, TransactionsData, Up
 
 class AdminTransactinsController {
 
+    /*
+    *** Get all transactions
+    */
     public static async get(token: RequestGETTransactions): Promise<Answers | AdminTransactionsResponse> {
 
         try {
@@ -84,6 +87,9 @@ class AdminTransactinsController {
         }
     }
 
+    /*
+    *** Update transaction
+    */
     public static async update(data: UpdateTransaction): Promise<Answers> {
 
         try {

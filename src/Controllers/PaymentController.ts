@@ -6,14 +6,13 @@
 */
 import { Logger } from "../Utils/Logger";
 import { Answers } from "../Utils/Answers";
-import { Fetch } from '../Utils/Fetch';
 import { Token } from "../Utils/Token";
 
 /*
 *** Models
 */
-import { InitPaymentData, InitResponse, GetCard, ObjectMicroSberRUB, Proxy, TrxMicroservice, ResponseMicroservice } from '../Models/PaymentControllerModels';
-import { Session, Payment, Card, Banks, Errors, Status } from "@prisma/client";
+import { InitPaymentData, InitResponse, GetCard, TrxMicroservice, ResponseMicroservice } from '../Models/PaymentControllerModels';
+import { Session, Payment, Card, Errors, Status } from "@prisma/client";
 
 /*
 *** Prisma client

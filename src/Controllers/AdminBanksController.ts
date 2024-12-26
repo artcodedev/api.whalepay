@@ -1,4 +1,4 @@
-import { Banks, Card } from "@prisma/client";
+import { Banks } from "@prisma/client";
 import { SecretKey } from "../Secure/SeckretKey";
 import { Answers } from "../Utils/Answers";
 import { Logger } from "../Utils/Logger";
@@ -9,6 +9,9 @@ import { RequestGETBanks, ResponseGETBanks, UpdateBank } from "../Models/AdminBa
 
 class AdminBanksController {
 
+    /*
+    *** Get all banks
+    */
     public static async get(token: RequestGETBanks): Promise<Answers | ResponseGETBanks> {
 
         try {
@@ -39,6 +42,9 @@ class AdminBanksController {
         }
     }
 
+    /*
+    *** Update bank
+    */
     public static async update(data: UpdateBank): Promise<Answers> {
 
         try {

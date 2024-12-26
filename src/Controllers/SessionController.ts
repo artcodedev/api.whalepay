@@ -1,11 +1,9 @@
 import { InitSessionDataResponse, InitSessionFetchRequestData, VarifySessionResponse } from "../Models/SessionControllerModels";
 import { Prisma } from "../Utils/Prisma";
-import { Console } from '../Utils/Console';
 import { AnswersError } from "../Models/Answers/AnswersErrorModels";
 import { Answers } from "../Utils/Answers";
 import { Currency, Status, Session, Merchant, Payment, Banks } from "@prisma/client";
 import { Logger } from "../Utils/Logger";
-import jsonwebtoken, { JwtPayload } from "jsonwebtoken";
 import { SecretKey } from '../Secure/SeckretKey';
 import { InitSessionDataRequest } from "../Models/MerchantControllerModels";
 import { fromString } from 'uuidv4'

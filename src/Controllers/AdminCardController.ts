@@ -49,8 +49,6 @@ class AdminCardController {
     public static async update(data: UpdateCard): Promise<Answers>  {
         try {
 
-            console.log(data)
-
             if (data.token) {
 
                 const tok: boolean = await Token.verify(data.token, SecretKey.secret_key);

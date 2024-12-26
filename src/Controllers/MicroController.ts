@@ -1,4 +1,4 @@
-import { Currency, Merchant, Payment, Session, Status } from "@prisma/client";
+import { Merchant, Payment, Session, Status } from "@prisma/client";
 import { Logger } from "../Utils/Logger";
 import { Prisma } from "../Utils/Prisma";
 import { Token } from "../Utils/Token";

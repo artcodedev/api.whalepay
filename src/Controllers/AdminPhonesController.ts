@@ -1,7 +1,6 @@
 import { Card } from "@prisma/client";
 import { SecretKey } from "../Secure/SeckretKey";
 import { Answers } from "../Utils/Answers";
-import { Fetch } from "../Utils/Fetch";
 import { Logger } from "../Utils/Logger";
 import { Token } from "../Utils/Token";
 import { Prisma } from "../Utils/Prisma";
@@ -11,6 +10,9 @@ import { Prisma } from "../Utils/Prisma";
 
 class AdminPhonesController {
 
+    /*
+    *** Get all phones 
+    */
     public static async getPhones({ token }: { token: string }) {
         try {
 
