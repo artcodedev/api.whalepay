@@ -133,7 +133,7 @@ model Withdraw {
   status               WithdrawStatus
   message              String?
   created_at           BigInt
-  updated_at           BigInt
+  updated_at           BigInt?
   status_error         Errors?
 }
 

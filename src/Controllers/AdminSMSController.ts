@@ -23,7 +23,7 @@ class AdminSMSController {
 
                     const token: string = await Token.sign({phone: data.phone}, SecretKey.secret_key_micro, 1000);
 
-                    const tty: GetTTY = await Fetch.request('http://localhost:3005/getalltty', {token: token});
+                    const tty: GetTTY = await Fetch.request('http://localhost:3010/getalltty', {token: token});
 
                     if (tty.status) {
 
@@ -31,7 +31,7 @@ class AdminSMSController {
 
                             if (i.phone === data.phone) {
 
-                                const getSmsData: GetSMSData = await Fetch.request('http://localhost:3005/getallmessages', {token: token, port: i.tty});
+                                const getSmsData: GetSMSData = await Fetch.request('http://localhost:3010/getallmessages', {token: token, port: i.tty});
 
                                 return {status: getSmsData.status ? 200 : 500, data: getSmsData.data}
 

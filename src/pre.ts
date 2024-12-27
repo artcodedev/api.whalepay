@@ -49,10 +49,17 @@ import { Fetch } from "./Utils/Fetch";
 
   // console.log(session);
 
-  const card = await Prisma.client.card.update({
-    where: {card_number: '2202208069490903'},
-    data: {busy: false, balance: 0}
-  })
+  // const card = await Prisma.client.merchant.findMany();
+
+  // const card = await Prisma.client.usersAdmin.findMany();
+
+  // const card = await Prisma.client.withdraw.findMany();
+
+  const card = await Prisma.client.withdraw.deleteMany()
+
+
+
+  console.log(card)
 
 
 

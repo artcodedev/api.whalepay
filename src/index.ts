@@ -30,6 +30,8 @@ import { GetSMS } from "./Models/AdminSMSControllerModel";
 import AdminSMSController from "./Controllers/AdminSMSController";
 import AdminPhonesController from "./Controllers/AdminPhonesController";
 import AdminCardDataController from "./Controllers/AdminCardDataController";
+import AdminWithdrawController from "./Controllers/AdminWithdrawController";
+import { createWithDraw } from "./Controllers/AdminWithdrawControllerModel";
 
 
 const app = new Elysia()
@@ -102,6 +104,10 @@ app.post('/api/admin/getallsms', async ({body}: {body: GetSMS}) => await AdminSM
 app.post('/api/admin/getallphones', async ({body}: {body: VerifyAuthToken}) => await AdminPhonesController.getPhones(body));
 
 app.post('/api/admin/getallcardamount', async ({body}: {body: VerifyAuthToken}) => await AdminCardDataController.getCard(body));
+
+app.post('/api/admin/getallwithdraw', async ({body}: {body: VerifyAuthToken}) => await AdminWithdrawController.get(body));
+
+app.post('/api/admin/createwithdraw', async ({body}: {body: createWithDraw}) => await AdminWithdrawController.set(body));
 
 
 /*

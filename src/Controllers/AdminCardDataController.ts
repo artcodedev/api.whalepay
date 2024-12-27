@@ -23,10 +23,10 @@ class AdminCardDataController {
     /*
     *** Get all number cards and balance
     */
-    public static async getCard(token:RequestDataCard): Promise<Answers | ResponseCardsData> {
+    public static async getCard( token : RequestDataCard): Promise<Answers | ResponseCardsData> {
 
         try {
-
+            
             if (token) {
 
                 const tok: boolean = await Token.verify(token.token, SecretKey.secret_key);
