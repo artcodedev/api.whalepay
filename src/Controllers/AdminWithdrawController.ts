@@ -183,6 +183,16 @@ class AdminWithdrawController {
             return Answers.serverError("error in server");
         }
     }
+
+    /*
+    *** Update withdraw 
+    */
+    public static async update() {
+        /*
+        -- update status 
+        -- send request update amount
+        */
+    }
 }
 
 export default AdminWithdrawController;
