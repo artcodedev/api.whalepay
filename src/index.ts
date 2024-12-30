@@ -23,7 +23,7 @@ import AdminCardController from "./Controllers/AdminCardController";
 import { RequestGETCard } from "./Models/AdminCardControllerModel";
 import AdminBanksController from "./Controllers/AdminBanksController";
 import { RequestGETBanks, UpdateBank } from "./Models/AdminBanksControllerModel";
-import { UpdateCard } from "./Models/AdminCardControllerModels";
+import { ResponseAmount, UpdateCard } from "./Models/AdminCardControllerModels";
 import { RequestGETTransactions, UpdateTransaction } from "./Models/AdminTransactionsControllerModel";
 import AdminTransactinsController from "./Controllers/AdminTransactionsController";
 import { GetSMS } from "./Models/AdminSMSControllerModel";
@@ -31,7 +31,7 @@ import AdminSMSController from "./Controllers/AdminSMSController";
 import AdminPhonesController from "./Controllers/AdminPhonesController";
 import AdminCardDataController from "./Controllers/AdminCardDataController";
 import AdminWithdrawController from "./Controllers/AdminWithdrawController";
-import { createWithDraw } from "./Controllers/AdminWithdrawControllerModel";
+import { createWithDraw } from "./Models/AdminWithdrawControllerModel";
 
 
 const app = new Elysia()
@@ -109,7 +109,6 @@ app.post('/api/admin/getallwithdraw', async ({body}: {body: VerifyAuthToken}) =>
 
 app.post('/api/admin/createwithdraw', async ({body}: {body: createWithDraw}) => await AdminWithdrawController.set(body));
 
-
 /*
 *** Get all active banks
 */
@@ -125,7 +124,10 @@ app.post('/api/session/verify', async ({body} : {body: InitSessionFetchRequestDa
 /*
 *** Microservice response
 */
-app.post('/api/micro/sberbankrub', ({body}: {body: SberBankRubBody}) => MicroController.sberbankrub(body));
+app.post('/api/micro/sberbankrub', async ({body}: {body: SberBankRubBody}) => await MicroController.sberbankrub(body));
+
+app.post('/api/micro/updateamount', async ({body}: {body: ResponseAmount}) => await AdminCardController.updateAmount(body));
+
 
 
 

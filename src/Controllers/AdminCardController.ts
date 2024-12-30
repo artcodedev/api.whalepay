@@ -5,7 +5,7 @@ import { Logger } from "../Utils/Logger";
 import { Token } from "../Utils/Token";
 import { Prisma } from "../Utils/Prisma";
 import { RequestGETCard } from "../Models/AdminCardControllerModel";
-import { UpdateCard } from "../Models/AdminCardControllerModels";
+import { ResponseAmount, ResponseGetCard, UpdateCard } from "../Models/AdminCardControllerModels";
 
 
 class AdminCardController {
@@ -13,7 +13,7 @@ class AdminCardController {
     /*
     *** Get all cards
     */
-    public static async get(token: RequestGETCard): Promise<Answers> {
+    public static async get(token: RequestGETCard): Promise<Answers | ResponseGetCard> {
 
         try {
 
@@ -69,6 +69,56 @@ class AdminCardController {
                         return bank_update ? Answers.ok('card is update') : Answers.wrong('card is not update');
 
                     }
+
+                    return Answers.wrong("card not found");
+
+                }
+
+                return Answers.wrong("token in not correct");
+
+            }
+
+            return Answers.wrong("data in not correct");
+        }
+        catch (e) {
+            Logger.write(process.env.ERROR_LOGS, e);
+            return Answers.serverError("error in server");
+        }
+    }
+
+    /*
+    *** Update balance card
+    */
+    public static async updateAmount(data: ResponseAmount): Promise<Answers | {status: number}>  {
+
+        try {
+
+            if (data.token) {
+
+                const tok: boolean = await Token.verify(data.token, SecretKey.secret_key_micro);
+
+                if (tok) {
+
+                    if (data.status == 200) {
+
+                        const card: Card | null = await Prisma.client.card.findUnique({
+                            where: {id: data.id_card, bank_uid: data.uid_bank}
+                        });
+
+                        if (card) {
+                            const card: Card = await Prisma.client.card.update({
+                                where: {id: data.id_card, bank_uid: data.uid_bank},
+                                data: {balance: data.sum}
+                            });
+
+                            return {status: card ? 200 : 500}
+                        }
+
+                        return Answers.wrong("card not found");
+ 
+                    }
+
+                    Logger.write(process.env.ERROR_LOGS, 'Error in get amount card service');
 
                     return Answers.wrong("card not found");
 

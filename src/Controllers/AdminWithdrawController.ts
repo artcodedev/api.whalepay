@@ -5,7 +5,8 @@ import { Answers } from "../Utils/Answers";
 import { Logger } from "../Utils/Logger";
 import { Token } from "../Utils/Token";
 import { Prisma } from "../Utils/Prisma";
-import { createWithDraw, JWTDataWithdraw, ResponseGETWithDraw, WithdrawData } from "./AdminWithdrawControllerModel";
+import { createWithDraw, JWTDataWithdraw, ResponseGETWithDraw, SberBankWithdrawRequest, WithdrawData } from "../Models/AdminWithdrawControllerModel";
+import { Fetch } from "../Utils/Fetch";
 
 
 
@@ -32,14 +33,22 @@ class AdminWithdrawController {
 
                         for (const i of withdraw) {
 
-                            const data_m: WithdrawData = {
-                                withdraw_card_number: i.withdraw_card_number,
-                                amount: i.amount,
-                                created_at: Number(i.created_at),
-                                status: i.status
+                            const card: Card | null = await Prisma.client.card.findUnique({
+                                where: {id: i.card_id}
+                            });
+
+                            if (card) {
+                                const data_m: WithdrawData = {
+                                    card_number: String(card.card_number),
+                                    withdraw_card_number: i.withdraw_card_number,
+                                    amount: i.amount,
+                                    created_at: Number(i.created_at),
+                                    status: i.status
+                                }
+    
+                                data.push(data_m);
                             }
 
-                            data.push(data_m);
                         }
 
                         return { status: 200, data: data }
@@ -107,7 +116,7 @@ class AdminWithdrawController {
                                         data: {
                                             merchant_id: merchant.id,
                                             card_id: card.id,
-                                            withdraw_card_number: data.card_number,
+                                            withdraw_card_number: data.card_number_withdraw,
                                             amount: data.amount,
                                             status: WithdrawStatus['PENDING'],
                                             message: '',
@@ -117,11 +126,32 @@ class AdminWithdrawController {
                                         }
                                     });
 
+
+                                    console.log(withdraw_cr)
+
                                     if (withdraw_cr) {
+
+                                        const token: string = await Token.sign({data: withdraw_cr.id}, SecretKey.secret_key_micro, 1000);
+
+                                        const data_withdraw: SberBankWithdrawRequest = {
+                                            login: card.card_login,
+                                            pass: card.card_password,
+                                            amount: data.amount,
+                                            id: withdraw_cr.id,
+                                            number_card: data.card_number_withdraw,
+                                            token: token,
+                                            phone: card.card_phone
+                                        }
+
+                                        console.log(data_withdraw)
 
                                         /*
                                         *** START MICROSERVICE
                                         */
+
+                                        const res = await Fetch.request('http://localhost:3006/micro/withdraw/sberbank_rub', data_withdraw);
+
+                                        console.log(res)
                                     }
 
                                     return { status: withdraw_cr ? 200 : 504 }

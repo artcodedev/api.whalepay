@@ -55,11 +55,11 @@ import { Fetch } from "./Utils/Fetch";
 
   // const card = await Prisma.client.withdraw.findMany();
 
-  const card = await Prisma.client.withdraw.deleteMany()
+  // const card = await Prisma.client.withdraw.deleteMany()
 
 
 
-  console.log(card)
+  // console.log(card)
 
 
 
@@ -180,6 +180,8 @@ import { Fetch } from "./Utils/Fetch";
 (async () => {
 
 
+
+
   //   const objectMicroSberRUB = {
   //     session_uid: "adsdd",
   //     token: "sdsds",
@@ -252,23 +254,61 @@ import { Fetch } from "./Utils/Fetch";
 
   // const rt = await Prisma.client.card.create({
   //   data: {
-  //     id: 1,
-  //   card_number: "2202208069490903",
-  //   card_login: "DFKodoisdf423",
-  //   card_password: "parolinemenyautsaAFAXA_!369",
-  //   card_phone: "+79841562811",
+
+  //   // card_number: "2202208069490903",
+  //   // card_login: "DFKodoisdf423",
+  //   // card_password: "parolinemenyautsaAFAXA_!369",
+  //   // card_phone: "+79841562811",
+  //   // card_holder: " ",
+  //   // card_receiver: "Денис Андреевич К.",
+  //   // card_cvv: " ",
+  //   // card_valid_thru: "10/20",
+  //   // card_pin: " ",
+  //   // card_secret: " ",
+  //   // active: true,
+  //   // busy: false,
+  //   // balance: 0,
+  //   // withdraw_avaliable: true,
+
+  //   id: 2,
+  //   card_number: "2202206759545713",
+  //   card_login: "SFkdjsdfsdfksdfkl",
+  //   card_password: "kalogen777!!!--F",
+  //   card_phone: "+79020542692",
   //   card_holder: " ",
-  //   card_receiver: "Денис Андреевич К.",
+  //   card_receiver: "Корней Георгиевич З.",
   //   card_cvv: " ",
-  //   card_valid_thru: "10/20",
+  //   card_valid_thru: "10/30",
   //   card_pin: " ",
   //   card_secret: " ",
   //   active: true,
   //   busy: false,
   //   balance: 0,
-  //   withdraw_avaliable: true,
+  //   withdraw_avaliable: false,
   //   bank_uid: '111'
   //   }
+  // })
+
+  // console.log(rt)
+
+  // const rt = await Prisma.client.card.create({
+  //   data: 
+  // {
+  //   payment_type: PaymentType["sberbank"],
+  //   card_number: "2202206759545713",
+  //   card_login: "SFkdjsdfsdfksdfkl",
+  //   card_password: "kalogen777!!!--F",
+  //   card_phone: "+79020542692",
+  //   card_holder: " ",
+  //   card_receiver: "Корней Георгиевич З.",
+  //   card_cvv: " ",
+  //   card_valid_thru: " ",
+  //   card_pin: " ",
+  //   card_secret: " ",
+  //   active: true,
+  //   busy: false,
+  //   balance: 0,
+  //   withdraw_avaliable: false,
   // })
 
   // console.log(rt)
